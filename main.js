@@ -3,7 +3,7 @@
 
     var google = (function () {
         function handleClientLoad() {
-            gapi.load('client:auth2', initializeClient);
+            gapi.load("client:auth2", initializeClient);
         }
 
         function initializeClient() {
@@ -35,88 +35,78 @@
             }
         }
 
-        function signIn(event) {
+        function signIn() {
             gapi.auth2.getAuthInstance().signIn();
         }
 
-        function signOut(event) {
+        function signOut() {
             gapi.auth2.getAuthInstance().signOut();
+        }
+
+        function fetchSpreadsheets(callback) {
+            gapi.client.drive.files.list({
+                "fields": "files(id, name)",
+                "q": "mimeType = 'application/vnd.google-apps.spreadsheet' and name contains '[SRS]'"
+            }).then(function (response) {
+                callback(response.result.files);
+            }, function (response) {
+                console.log('Error: ' + response.result.error.message);
+            });
+        }
+
+        function fetchRows(spreadsheetId, column, callback) {
+            gapi.client.sheets.spreadsheets.values.get({
+                spreadsheetId: spreadsheetId,
+                range: "SRS!" + column,
+            }).then(function (response) {
+                callback(response.result.values);
+            }, function (response) {
+                console.log('Error: ' + response.result.error.message);
+            });
         }
 
         return {
             handleClientLoad: handleClientLoad,
             setSigninStatusListener: setSigninStatusListener,
             signIn: signIn,
-            signOut: signOut
+            signOut: signOut,
+            fetchSpreadsheets: fetchSpreadsheets,
+            fetchRows: fetchRows
         };
     })();
 
-    var authorizeButton = document.getElementById('authorize_button');
-    var signoutButton = document.getElementById('signout_button');
+    var authorizeButton = document.getElementById("authorize_button");
+    var signoutButton = document.getElementById("signout_button");
+    var fetchButton = document.getElementById("fetch_button");
 
     google.setSigninStatusListener(function (isSignedIn) {
         if (isSignedIn) {
-            authorizeButton.style.display = 'none';
-            signoutButton.style.display = 'block';
-
-            listMajors();
-            listFiles();
+            authorizeButton.style.display = "none";
+            signoutButton.style.display = "block";
+            fetchButton.style.display = "block";
         } else {
-            authorizeButton.style.display = 'block';
-            signoutButton.style.display = 'none';
+            authorizeButton.style.display = "block";
+            signoutButton.style.display = "none";
+            fetchButton.style.display = "none";
         }
-
-        authorizeButton.onclick = google.signIn;
-        signoutButton.onclick = google.signOut;
     });
 
-    /**
-     * Print the names and majors of students in a sample spreadsheet:
-     * https://docs.google.com/spreadsheets/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms/edit
-     */
-    function listMajors() {
-        gapi.client.sheets.spreadsheets.values.get({
-            spreadsheetId: '1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms',
-            range: 'Class Data!A2:E',
-        }).then(function (response) {
-            var range = response.result;
-            if (range.values.length > 0) {
-                console.log('Name, Major:');
-                for (var i = 0; i < range.values.length; i++) {
-                    var row = range.values[i];
-                    // Print columns A and E, which correspond to indices 0 and 4.
-                    console.log(row[0] + ', ' + row[4]);
-                }
-            } else {
-                console.log('No data found.');
-            }
-        }, function (response) {
-            console.log('Error: ' + response.result.error.message);
-        });
-    }
-
-    /**
-     * Print files.
-     */
-    function listFiles() {
-        gapi.client.drive.files.list({
-            'pageSize': 10,
-            'fields': "nextPageToken, files(id, name)",
-            'q': "mimeType='application/vnd.google-apps.spreadsheet'"
-        }).then(function (response) {
-            console.log('Files:');
-            var files = response.result.files;
-            if (files && files.length > 0) {
-                for (var i = 0; i < files.length; i++) {
-                    var file = files[i];
-                    console.log(file);
-                    console.log(file.name + ' (' + file.id + ')');
-                }
-            } else {
-                console.log('No files found.');
+    authorizeButton.onclick = google.signIn;
+    signoutButton.onclick = google.signOut;
+    fetchButton.onclick = function () {
+        google.fetchSpreadsheets(function (spreadsheets) {
+            console.log(spreadsheets);
+            for (var spreadsheet of spreadsheets) {
+                google.fetchRows(spreadsheet.id, "A1:A", function (rows) {
+                    console.log(rows);
+                    for (var row of rows) {
+                        var cell = row[0];
+                        console.log(cell);
+                    }
+                });
             }
         });
-    }
+    };
 
     window.srs = {
         google: google
