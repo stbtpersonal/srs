@@ -43,25 +43,29 @@
             gapi.auth2.getAuthInstance().signOut();
         }
 
-        function fetchSpreadsheets(callback) {
-            gapi.client.drive.files.list({
-                "fields": "files(id, name)",
-                "q": "mimeType = 'application/vnd.google-apps.spreadsheet' and name contains '[SRS]'"
-            }).then(function (response) {
-                callback(response.result.files);
-            }, function (response) {
-                console.log('Error: ' + response.result.error.message);
+        function fetchSpreadsheets() {
+            return new Promise(function (resolve, reject) {
+                gapi.client.drive.files.list({
+                    "fields": "files(id, name)",
+                    "q": "mimeType = 'application/vnd.google-apps.spreadsheet' and name contains '[SRS]'"
+                }).then(function (response) {
+                    resolve(response.result.files);
+                }, function (response) {
+                    reject(response.result.error.message);
+                });
             });
         }
 
-        function fetchRows(spreadsheetId, column, callback) {
-            gapi.client.sheets.spreadsheets.values.get({
-                spreadsheetId: spreadsheetId,
-                range: "SRS!" + column,
-            }).then(function (response) {
-                callback(response.result.values);
-            }, function (response) {
-                console.log('Error: ' + response.result.error.message);
+        function fetchRows(spreadsheetId, column) {
+            return new Promise(function (resolve, reject) {
+                gapi.client.sheets.spreadsheets.values.get({
+                    spreadsheetId: spreadsheetId,
+                    range: "SRS!" + column,
+                }).then(function (response) {
+                    resolve(response.result.values);
+                }, function (response) {
+                    reject(response.result.error.message);
+                });
             });
         }
 
@@ -77,19 +81,68 @@
 
     var authorizeButton = document.getElementById("authorize_button");
     var signoutButton = document.getElementById("signout_button");
-    var rebuildButton = document.getElementById("rebuild_button");
+
+    authorizeButton.onclick = google.signIn;
+    signoutButton.onclick = google.signOut;
 
     google.setSigninStatusListener(function (isSignedIn) {
         if (isSignedIn) {
             authorizeButton.style.display = "none";
             signoutButton.style.display = "block";
-            rebuildButton.style.display = "block";
+
+            refresh();
         } else {
             authorizeButton.style.display = "block";
             signoutButton.style.display = "none";
-            rebuildButton.style.display = "none";
         }
     });
+
+    var database = undefined;
+
+    function refresh() {
+        refreshDatabase().then(function () {
+            refreshStudyAmount();
+            refreshReviewAmount();
+        });
+    }
+
+    function refreshDatabase() {
+        return new Promise(function (resolve, reject) {
+            if (database) {
+                resolve();
+                return;
+            }
+
+            var entries = [];
+
+            function fetchNextRows(remainingSpreadsheets) {
+                if (remainingSpreadsheets.length == 0) {
+                    database = entries;
+                    resolve();
+                    return;
+                }
+
+                var spreadsheet = remainingSpreadsheets.pop();
+                google.fetchRows(spreadsheet.id, "B2:I").then(function (rows) {
+                    for (var i = 0; i < rows.length; i++) {
+                        var row = rows[i];
+                        var srsData = deserializeSrsData(row);
+                        if (srsData) {
+                            var databaseEntry = {
+                                srsData: srsData,
+                                spreadsheetId: spreadsheet.id,
+                                spreadsheetRow: 2 + i,
+                            };
+                            entries.push(databaseEntry);
+                        }
+                    }
+                    fetchNextRows(remainingSpreadsheets);
+                });
+            }
+
+            google.fetchSpreadsheets().then(fetchNextRows);
+        });
+    }
 
     var COLUMN_INDEX_JAPANESE = 0;
     var COLUMN_INDEX_ENGLISH = 1;
@@ -100,34 +153,34 @@
     var COLUMN_INDEX_E_TO_J_LEVEL = 6;
     var COLUMN_INDEX_E_TO_J_TIME = 7;
 
-    function deserializeDatabaseEntry(serializedEntry, spreadsheetRow) {
-        if (!serializedEntry[COLUMN_INDEX_JAPANESE] || !serializedEntry[COLUMN_INDEX_ENGLISH]) {
+    function deserializeSrsData(serializedData) {
+        if (!serializedData[COLUMN_INDEX_JAPANESE] || !serializedData[COLUMN_INDEX_ENGLISH]) {
             return undefined;
         }
 
-        var serializedJapanese = serializedEntry[COLUMN_INDEX_JAPANESE];
+        var serializedJapanese = serializedData[COLUMN_INDEX_JAPANESE];
         var japanese = serializedJapanese.split("; ");
 
-        var serializedEnglish = serializedEntry[COLUMN_INDEX_ENGLISH];
+        var serializedEnglish = serializedData[COLUMN_INDEX_ENGLISH];
         var english = serializedEnglish.split("; ");
 
-        var serializedMnemonic = serializedEntry[COLUMN_INDEX_MNEMONIC];
+        var serializedMnemonic = serializedData[COLUMN_INDEX_MNEMONIC];
         var mnemonic = serializedMnemonic ? serializedMnemonic : "";
 
-        var serializedExamples = serializedEntry[COLUMN_INDEX_EXAMPLES];
+        var serializedExamples = serializedData[COLUMN_INDEX_EXAMPLES];
         var examples = serializedExamples ? serializedExamples.split("; ") : [];
 
-        var serializedJToELevel = serializedEntry[COLUMN_INDEX_J_TO_E_LEVEL];
+        var serializedJToELevel = serializedData[COLUMN_INDEX_J_TO_E_LEVEL];
         var jToELevel = serializedJToELevel ? serializedJToELevel : 0;
 
-        var serializedJToETime = serializedEntry[COLUMN_INDEX_J_TO_E_TIME];
-        var jToETime = serializedJToETime ? serializedJToETime : 0;
+        var serializedJToETime = serializedData[COLUMN_INDEX_J_TO_E_TIME];
+        var jToETime = serializedJToETime ? new Date(JSON.serializedJToETime) : new Date(0);
 
-        var serializedEToJLevel = serializedEntry[COLUMN_INDEX_E_TO_J_LEVEL];
+        var serializedEToJLevel = serializedData[COLUMN_INDEX_E_TO_J_LEVEL];
         var eToJLevel = serializedEToJLevel ? serializedEToJLevel : 0;
 
-        var serializedEToJTime = serializedEntry[COLUMN_INDEX_E_TO_J_TIME];
-        var eToJTime = serializedEToJTime ? serializedEToJTime : 0;
+        var serializedEToJTime = serializedData[COLUMN_INDEX_E_TO_J_TIME];
+        var eToJTime = serializedEToJTime ? new Date(serializedEToJTime) : new Date(0);
 
         return {
             japanese: japanese,
@@ -137,42 +190,49 @@
             jToELevel: jToELevel,
             jToETime: jToETime,
             eToJLevel: eToJLevel,
-            eToJTime: eToJTime,
-
-            spreadsheetRow: spreadsheetRow
+            eToJTime: eToJTime
         };
     }
 
-    function rebuildDatabase() {
-        var database = { collections: [] };
+    var studyAmountElement = document.getElementById("study_amount");
+    var reviewAmountElement = document.getElementById("review_amount");
 
-        function fetchNextRows(remainingSpreadsheets) {
-            if (remainingSpreadsheets.length == 0) {
-                console.log(database);
-            }
-            else {
-                var spreadsheet = remainingSpreadsheets.pop();
-                var collection = { entries: [] };
-                google.fetchRows(spreadsheet.id, "B2:I", function (rows) {
-                    for (var i = 0; i < rows.length; i++) {
-                        var row = rows[i];
-                        var entry = deserializeDatabaseEntry(row, 2 + i);
-                        if (entry) {
-                            collection.entries.push(entry);
-                        }
-                    }
-                    database.collections.push(collection);
-                    fetchNextRows(remainingSpreadsheets);
-                });
-            }
-        }
-
-        google.fetchSpreadsheets(fetchNextRows);
+    function refreshStudyAmount() {
+        studyAmountElement.innerHTML = getEntriesForStudy().length;
     }
 
-    authorizeButton.onclick = google.signIn;
-    signoutButton.onclick = google.signOut;
-    rebuildButton.onclick = rebuildDatabase;
+    function refreshReviewAmount() {
+        reviewAmountElement.innerHTML = getEntriesForReview().length;
+    }
+
+    function getEntriesForStudy() {
+        if (!database) {
+            return [];
+        }
+
+        return database.filter(function (entry) {
+            return entry.srsData.jToELevel == 0;
+        });
+    }
+
+    function getEntriesForReview() {
+        if (!database) {
+            return [];
+        }
+
+        var now = Date.now();
+        return database.filter(function (entry) {
+            var srsLevel = entry.srsData.jToELevel;
+            if (!srsLevel) {
+                return false;
+            }
+
+            var levelDurationInHours = Math.pow(2, srsLevel);
+            var levelDurationInMillis = levelDurationInHours * 60 * 60 * 1000;
+
+            return entry.srsData.jToETime + levelDurationInMillis < now;
+        });
+    }
 
     window.srs = {
         google: google
