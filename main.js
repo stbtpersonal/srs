@@ -1,6 +1,14 @@
 (function () {
     "use strict";
 
+    var initializingScreenElement = document.getElementById("initializing-screen");
+    var signInScreenElement = document.getElementById("sign-in-screen");
+    var mainScreenElement = document.getElementById("main-screen");
+    var signInButton = document.getElementById("sign-in");
+    var signOutButton = document.getElementById("sign-out");
+    var studyAmountElement = document.getElementById("study-amount");
+    var reviewAmountElement = document.getElementById("review-amount");
+
     var google = (function () {
         function handleClientLoad() {
             gapi.load("client:auth2", initializeClient);
@@ -79,149 +87,148 @@
         };
     })();
 
-    var authorizeButton = document.getElementById("authorize_button");
-    var signoutButton = document.getElementById("signout_button");
+    var signin = (function () {
+        signInButton.onclick = google.signIn;
+        signOutButton.onclick = google.signOut;
 
-    authorizeButton.onclick = google.signIn;
-    signoutButton.onclick = google.signOut;
+        google.setSigninStatusListener(function (isSignedIn) {
+            initializingScreenElement.style.display = "none";
 
-    google.setSigninStatusListener(function (isSignedIn) {
-        if (isSignedIn) {
-            authorizeButton.style.display = "none";
-            signoutButton.style.display = "block";
+            if (!isSignedIn) {
+                signInScreenElement.style.display = "block";
+                mainScreenElement.style.display = "none";
+            } else {
+                signInScreenElement.style.display = "none";
+                mainScreenElement.style.display = "block";
 
-            refresh();
-        } else {
-            authorizeButton.style.display = "block";
-            signoutButton.style.display = "none";
-        }
-    });
-
-    var database = undefined;
-
-    function refresh() {
-        refreshDatabase().then(function () {
-            refreshStudyAmount();
-            refreshReviewAmount();
-        });
-    }
-
-    function refreshDatabase() {
-        return new Promise(function (resolve, reject) {
-            if (database) {
-                resolve();
-                return;
+                refresh();
             }
+        });
 
-            var entries = [];
+        return {};
+    })();
 
-            function fetchNextRows(remainingSpreadsheets) {
-                if (remainingSpreadsheets.length == 0) {
-                    database = entries;
-                    resolve();
-                    return;
+    var database = (function () {
+        var entriesCache = [];
+
+        function refreshEntries() {
+            return new Promise(function (resolve, reject) {
+                var entries = [];
+
+                function fetchNextRows(remainingSpreadsheets) {
+                    if (remainingSpreadsheets.length == 0) {
+                        entriesCache = entries;
+                        resolve();
+                        return;
+                    }
+
+                    var spreadsheet = remainingSpreadsheets.pop();
+                    google.fetchRows(spreadsheet.id, "B2:I").then(function (rows) {
+                        for (var i = 0; i < rows.length; i++) {
+                            var row = rows[i];
+                            var srsData = deserializeSrsData(row);
+                            if (srsData) {
+                                var databaseEntry = {
+                                    srsData: srsData,
+                                    spreadsheetId: spreadsheet.id,
+                                    spreadsheetRow: 2 + i,
+                                };
+                                entries.push(databaseEntry);
+                            }
+                        }
+                        fetchNextRows(remainingSpreadsheets);
+                    });
                 }
 
-                var spreadsheet = remainingSpreadsheets.pop();
-                google.fetchRows(spreadsheet.id, "B2:I").then(function (rows) {
-                    for (var i = 0; i < rows.length; i++) {
-                        var row = rows[i];
-                        var srsData = deserializeSrsData(row);
-                        if (srsData) {
-                            var databaseEntry = {
-                                srsData: srsData,
-                                spreadsheetId: spreadsheet.id,
-                                spreadsheetRow: 2 + i,
-                            };
-                            entries.push(databaseEntry);
-                        }
-                    }
-                    fetchNextRows(remainingSpreadsheets);
-                });
+                google.fetchSpreadsheets().then(fetchNextRows);
+            });
+        }
+
+        var COLUMN_INDEX_JAPANESE = 0;
+        var COLUMN_INDEX_ENGLISH = 1;
+        var COLUMN_INDEX_MNEMONIC = 2;
+        var COLUMN_INDEX_EXAMPLES = 3;
+        var COLUMN_INDEX_J_TO_E_LEVEL = 4;
+        var COLUMN_INDEX_J_TO_E_TIME = 5;
+        var COLUMN_INDEX_E_TO_J_LEVEL = 6;
+        var COLUMN_INDEX_E_TO_J_TIME = 7;
+
+        function deserializeSrsData(serializedData) {
+            if (!serializedData[COLUMN_INDEX_JAPANESE] || !serializedData[COLUMN_INDEX_ENGLISH]) {
+                return undefined;
             }
 
-            google.fetchSpreadsheets().then(fetchNextRows);
+            var serializedJapanese = serializedData[COLUMN_INDEX_JAPANESE];
+            var japanese = serializedJapanese.split("; ");
+
+            var serializedEnglish = serializedData[COLUMN_INDEX_ENGLISH];
+            var english = serializedEnglish.split("; ");
+
+            var serializedMnemonic = serializedData[COLUMN_INDEX_MNEMONIC];
+            var mnemonic = serializedMnemonic ? serializedMnemonic : "";
+
+            var serializedExamples = serializedData[COLUMN_INDEX_EXAMPLES];
+            var examples = serializedExamples ? serializedExamples.split("; ") : [];
+
+            var serializedJToELevel = serializedData[COLUMN_INDEX_J_TO_E_LEVEL];
+            var jToELevel = serializedJToELevel ? serializedJToELevel : 0;
+
+            var serializedJToETime = serializedData[COLUMN_INDEX_J_TO_E_TIME];
+            var jToETime = serializedJToETime ? new Date(JSON.serializedJToETime) : new Date(0);
+
+            var serializedEToJLevel = serializedData[COLUMN_INDEX_E_TO_J_LEVEL];
+            var eToJLevel = serializedEToJLevel ? serializedEToJLevel : 0;
+
+            var serializedEToJTime = serializedData[COLUMN_INDEX_E_TO_J_TIME];
+            var eToJTime = serializedEToJTime ? new Date(serializedEToJTime) : new Date(0);
+
+            return {
+                japanese: japanese,
+                english: english,
+                mnemonic: mnemonic,
+                examples: examples,
+                jToELevel: jToELevel,
+                jToETime: jToETime,
+                eToJLevel: eToJLevel,
+                eToJTime: eToJTime
+            };
+        }
+
+        function getEntries() {
+            return entriesCache.slice();
+        }
+
+        return {
+            refreshEntries: refreshEntries,
+            getEntries: getEntries
+        };
+    })();
+
+    function refresh() {
+        database.refreshEntries().then(function () {
+            var entries = database.getEntries();
+            refreshStudyAmount(entries);
+            refreshReviewAmount(entries);
         });
     }
 
-    var COLUMN_INDEX_JAPANESE = 0;
-    var COLUMN_INDEX_ENGLISH = 1;
-    var COLUMN_INDEX_MNEMONIC = 2;
-    var COLUMN_INDEX_EXAMPLES = 3;
-    var COLUMN_INDEX_J_TO_E_LEVEL = 4;
-    var COLUMN_INDEX_J_TO_E_TIME = 5;
-    var COLUMN_INDEX_E_TO_J_LEVEL = 6;
-    var COLUMN_INDEX_E_TO_J_TIME = 7;
-
-    function deserializeSrsData(serializedData) {
-        if (!serializedData[COLUMN_INDEX_JAPANESE] || !serializedData[COLUMN_INDEX_ENGLISH]) {
-            return undefined;
-        }
-
-        var serializedJapanese = serializedData[COLUMN_INDEX_JAPANESE];
-        var japanese = serializedJapanese.split("; ");
-
-        var serializedEnglish = serializedData[COLUMN_INDEX_ENGLISH];
-        var english = serializedEnglish.split("; ");
-
-        var serializedMnemonic = serializedData[COLUMN_INDEX_MNEMONIC];
-        var mnemonic = serializedMnemonic ? serializedMnemonic : "";
-
-        var serializedExamples = serializedData[COLUMN_INDEX_EXAMPLES];
-        var examples = serializedExamples ? serializedExamples.split("; ") : [];
-
-        var serializedJToELevel = serializedData[COLUMN_INDEX_J_TO_E_LEVEL];
-        var jToELevel = serializedJToELevel ? serializedJToELevel : 0;
-
-        var serializedJToETime = serializedData[COLUMN_INDEX_J_TO_E_TIME];
-        var jToETime = serializedJToETime ? new Date(JSON.serializedJToETime) : new Date(0);
-
-        var serializedEToJLevel = serializedData[COLUMN_INDEX_E_TO_J_LEVEL];
-        var eToJLevel = serializedEToJLevel ? serializedEToJLevel : 0;
-
-        var serializedEToJTime = serializedData[COLUMN_INDEX_E_TO_J_TIME];
-        var eToJTime = serializedEToJTime ? new Date(serializedEToJTime) : new Date(0);
-
-        return {
-            japanese: japanese,
-            english: english,
-            mnemonic: mnemonic,
-            examples: examples,
-            jToELevel: jToELevel,
-            jToETime: jToETime,
-            eToJLevel: eToJLevel,
-            eToJTime: eToJTime
-        };
+    function refreshStudyAmount(entries) {
+        studyAmountElement.innerHTML = findEntriesForStudy(entries).length;
     }
 
-    var studyAmountElement = document.getElementById("study_amount");
-    var reviewAmountElement = document.getElementById("review_amount");
-
-    function refreshStudyAmount() {
-        studyAmountElement.innerHTML = getEntriesForStudy().length;
+    function refreshReviewAmount(entries) {
+        reviewAmountElement.innerHTML = findEntriesForReview(entries).length;
     }
 
-    function refreshReviewAmount() {
-        reviewAmountElement.innerHTML = getEntriesForReview().length;
-    }
-
-    function getEntriesForStudy() {
-        if (!database) {
-            return [];
-        }
-
-        return database.filter(function (entry) {
+    function findEntriesForStudy(entries) {
+        return entries.filter(function (entry) {
             return entry.srsData.jToELevel == 0;
         });
     }
 
-    function getEntriesForReview() {
-        if (!database) {
-            return [];
-        }
-
+    function findEntriesForReview(entries) {
         var now = Date.now();
-        return database.filter(function (entry) {
+        return entries.filter(function (entry) {
             var srsLevel = entry.srsData.jToELevel;
             if (!srsLevel) {
                 return false;
