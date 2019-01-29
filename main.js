@@ -77,36 +77,102 @@
 
     var authorizeButton = document.getElementById("authorize_button");
     var signoutButton = document.getElementById("signout_button");
-    var fetchButton = document.getElementById("fetch_button");
+    var rebuildButton = document.getElementById("rebuild_button");
 
     google.setSigninStatusListener(function (isSignedIn) {
         if (isSignedIn) {
             authorizeButton.style.display = "none";
             signoutButton.style.display = "block";
-            fetchButton.style.display = "block";
+            rebuildButton.style.display = "block";
         } else {
             authorizeButton.style.display = "block";
             signoutButton.style.display = "none";
-            fetchButton.style.display = "none";
+            rebuildButton.style.display = "none";
         }
     });
 
-    authorizeButton.onclick = google.signIn;
-    signoutButton.onclick = google.signOut;
-    fetchButton.onclick = function () {
-        google.fetchSpreadsheets(function (spreadsheets) {
-            console.log(spreadsheets);
-            for (var spreadsheet of spreadsheets) {
-                google.fetchRows(spreadsheet.id, "A1:A", function (rows) {
-                    console.log(rows);
-                    for (var row of rows) {
-                        var cell = row[0];
-                        console.log(cell);
+    var COLUMN_INDEX_JAPANESE = 0;
+    var COLUMN_INDEX_ENGLISH = 1;
+    var COLUMN_INDEX_MNEMONIC = 2;
+    var COLUMN_INDEX_EXAMPLES = 3;
+    var COLUMN_INDEX_J_TO_E_LEVEL = 4;
+    var COLUMN_INDEX_J_TO_E_TIME = 5;
+    var COLUMN_INDEX_E_TO_J_LEVEL = 6;
+    var COLUMN_INDEX_E_TO_J_TIME = 7;
+
+    function deserializeDatabaseEntry(serializedEntry, spreadsheetRow) {
+        if (!serializedEntry[COLUMN_INDEX_JAPANESE] || !serializedEntry[COLUMN_INDEX_ENGLISH]) {
+            return undefined;
+        }
+
+        var serializedJapanese = serializedEntry[COLUMN_INDEX_JAPANESE];
+        var japanese = serializedJapanese.split("; ");
+
+        var serializedEnglish = serializedEntry[COLUMN_INDEX_ENGLISH];
+        var english = serializedEnglish.split("; ");
+
+        var serializedMnemonic = serializedEntry[COLUMN_INDEX_MNEMONIC];
+        var mnemonic = serializedMnemonic ? serializedMnemonic : "";
+
+        var serializedExamples = serializedEntry[COLUMN_INDEX_EXAMPLES];
+        var examples = serializedExamples ? serializedExamples.split("; ") : [];
+
+        var serializedJToELevel = serializedEntry[COLUMN_INDEX_J_TO_E_LEVEL];
+        var jToELevel = serializedJToELevel ? serializedJToELevel : 0;
+
+        var serializedJToETime = serializedEntry[COLUMN_INDEX_J_TO_E_TIME];
+        var jToETime = serializedJToETime ? serializedJToETime : 0;
+
+        var serializedEToJLevel = serializedEntry[COLUMN_INDEX_E_TO_J_LEVEL];
+        var eToJLevel = serializedEToJLevel ? serializedEToJLevel : 0;
+
+        var serializedEToJTime = serializedEntry[COLUMN_INDEX_E_TO_J_TIME];
+        var eToJTime = serializedEToJTime ? serializedEToJTime : 0;
+
+        return {
+            japanese: japanese,
+            english: english,
+            mnemonic: mnemonic,
+            examples: examples,
+            jToELevel: jToELevel,
+            jToETime: jToETime,
+            eToJLevel: eToJLevel,
+            eToJTime: eToJTime,
+
+            spreadsheetRow: spreadsheetRow
+        };
+    }
+
+    function rebuildDatabase() {
+        var database = { collections: [] };
+
+        function fetchNextRows(remainingSpreadsheets) {
+            if (remainingSpreadsheets.length == 0) {
+                console.log(database);
+            }
+            else {
+                var spreadsheet = remainingSpreadsheets.pop();
+                var collection = { entries: [] };
+                google.fetchRows(spreadsheet.id, "B2:I", function (rows) {
+                    for (var i = 0; i < rows.length; i++) {
+                        var row = rows[i];
+                        var entry = deserializeDatabaseEntry(row, 2 + i);
+                        if (entry) {
+                            collection.entries.push(entry);
+                        }
                     }
+                    database.collections.push(collection);
+                    fetchNextRows(remainingSpreadsheets);
                 });
             }
-        });
-    };
+        }
+
+        google.fetchSpreadsheets(fetchNextRows);
+    }
+
+    authorizeButton.onclick = google.signIn;
+    signoutButton.onclick = google.signOut;
+    rebuildButton.onclick = rebuildDatabase;
 
     window.srs = {
         google: google
