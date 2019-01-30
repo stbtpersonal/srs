@@ -35,6 +35,8 @@
         "cha": "ちゃ", "chu": "ちゅ", "che": "ちぇ", "cho": "ちょ",
     };
 
+    var CONSONANTS = ["k", "s", "t", "n", "h", "m", "y", "r", "w", "g", "z", "d", "b", "p", "j", "c"];
+
     var homeButton = document.getElementById("review-home");
     var toTranslateElement = document.getElementById("review-to-translate");
     var translationInputElement = document.getElementById("review-translation");
@@ -105,7 +107,7 @@
         var originalInput = lowerCaseInput;
         var transformedInput = "";
 
-        function tryTransform(keyLength) {
+        function tryDictionaryTransform(keyLength) {
             var key = originalInput.substring(0, keyLength);
             var value = INPUT_TRANSFORMATION_DICTIONARY[key];
             if (value) {
@@ -117,13 +119,33 @@
             return false;
         }
 
+        function tryTsuTransform() {
+            if (originalInput.length < 2) {
+                return false;
+            }
+
+            var firstCharacter = originalInput[0];
+            var secondCharacter = originalInput[1];
+            if (CONSONANTS.includes(firstCharacter) && firstCharacter === secondCharacter) {
+                transformedInput += "っ";
+                originalInput = originalInput.substring(1);
+                return true;
+            }
+
+            return false;
+        }
+
         while (originalInput.length > 0) {
             var success = false;
             for (var i = 1; i <= 3 && i <= originalInput.length; i++) {
-                success = tryTransform(i);
+                success = tryDictionaryTransform(i);
                 if (success) {
                     continue;
                 }
+            }
+
+            if (!success) {
+                success = tryTsuTransform();
             }
 
             if (!success) {
