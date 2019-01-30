@@ -198,12 +198,15 @@
     }
 
     function transformInput() {
+        var lowerCaseInput = translationInputElement.value.toLowerCase();
+        
         var visibleEntry = sessionEntries[visibleEntryIndex];
-        if (visibleEntry.type !== ENTRY_TYPE_E_TO_J) {
+        if (visibleEntry.type === ENTRY_TYPE_J_TO_E) {
+            translationInputElement.value = lowerCaseInput;
             return;
         }
 
-        var originalInput = translationInputElement.value;
+        var originalInput = lowerCaseInput;
         var transformedInput = "";
 
         function tryTransform(keyLength) {
