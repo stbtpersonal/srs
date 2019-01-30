@@ -5,12 +5,14 @@
     var signInScreenElement = document.getElementById("sign-in-screen");
     var mainScreenElement = document.getElementById("main-screen");
     var studyScreenElement = document.getElementById("study-screen");
+    var reviewScreenElement = document.getElementById("review-screen");
 
     function setScreen(screenElement) {
         initializingScreenElement.style.display = "none";
         signInScreenElement.style.display = "none";
         mainScreenElement.style.display = "none";
         studyScreenElement.style.display = "none";
+        reviewScreenElement.style.display = "none";
 
         screenElement.style.display = "block";
     }
@@ -33,10 +35,15 @@
         setScreen(studyScreenElement);
     }
 
+    function setScreenReview() {
+        setScreen(reviewScreenElement);
+    }
+
     window.srs = {
         setScreenInitializing: setScreenInitializing,
         setScreenSignIn: setScreenSignIn,
         setScreenMain: setScreenMain,
         setScreenStudy: setScreenStudy,
+        setScreenReview: setScreenReview,
     };
 })();

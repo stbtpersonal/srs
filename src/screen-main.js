@@ -3,8 +3,15 @@
 
     var studyAmountElement = document.getElementById("study-amount");
     var reviewAmountElement = document.getElementById("review-amount");
+    var studyButton = document.getElementById("study");
+    var reviewButton = document.getElementById("review");
+
+    studyButton.onclick = srs.setScreenStudy;
+    reviewButton.onclick = srs.setScreenReview;
 
     function refresh() {
+        studyAmountElement.innerHTML = "?";
+        reviewAmountElement.innerHTML = "?";
         srs.database.refreshEntries().then(function () {
             var entries = srs.database.getEntries();
             refreshStudyAmount(entries);
@@ -42,6 +49,6 @@
     }
 
     srs.screenMain = {
-        refresh: refresh
+        refresh: refresh,
     };
 })();

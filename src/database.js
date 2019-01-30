@@ -82,6 +82,6 @@
 
     srs.database = {
         refreshEntries: refreshEntries,
-        getEntries: getEntries
+        getEntries: getEntries,
     };
 })();

@@ -1,7 +1,11 @@
 (function () {
     "use strict";
 
-    var signinListener = undefined;
+    var signInButton = document.getElementById("sign-in");
+    var signOutButton = document.getElementById("sign-out");
+
+    signInButton.onclick = signIn;
+    signOutButton.onclick = signOut;
 
     function handleClientLoad() {
         gapi.load("client:auth2", initializeClient);
@@ -24,13 +28,11 @@
         });
     }
 
-    function setSigninStatusListener(listener) {
-        signinListener = listener;
-    }
-
     function notifySigninStatusChanged(isSignedIn) {
-        if (signinListener) {
-            signinListener(isSignedIn);
+        if (!isSignedIn) {
+            srs.setScreenSignIn();
+        } else {
+            srs.setScreenMain();
         }
     }
 
@@ -70,10 +72,7 @@
 
     srs.google = {
         handleClientLoad: handleClientLoad,
-        setSigninStatusListener: setSigninStatusListener,
-        signIn: signIn,
-        signOut: signOut,
         fetchSpreadsheets: fetchSpreadsheets,
-        fetchRows: fetchRows
+        fetchRows: fetchRows,
     };
 })();

@@ -22,26 +22,35 @@
     <div><span>Review: </span><span id="review-amount">?</span></div>
 
     <button id="study">Study</button>
+    <button id="review">Review</button>
   </div>
 
   <div id="study-screen" style="display: none;">
-    <div><span>Japanese: </span><span id="srs-japanese"></span></div>
-    <div><span>English: </span><span id="srs-english"></span></div>
-    <div><span>Mnemonic: </span><span id="srs-mnemonic"></span></div>
+    <div><button id="study-home">Home</button></div>
+    <div><span>Japanese: </span><span id="study-japanese"></span></div>
+    <div><span>English: </span><span id="study-english"></span></div>
+    <div><span>Mnemonic: </span><span id="study-mnemonic"></span></div>
     <div>
       <span>Examples:</span>
-      <div id="srs-examples"></div>
+      <div id="study-examples"></div>
     </div>
     <div>
       <button id="study-previous">Previous</button><button id="study-next">Next</button>
     </div>
   </div>
 
+  <div id="review-screen" style="display: none;">
+    <div><button id="review-home">Home</button></div>
+    <div><span>Word: </span><span id="review-to-translate"></span></div>
+    <div><span>Translation: </span><input id="review-translation" type="text"></input></div>
+  </div>
+
   <script src="src/main.js" type="text/javascript"></script>
   <script src="src/google.js" type="text/javascript"></script>
-  <script src="src/signin.js" type="text/javascript"></script>
   <script src="src/database.js" type="text/javascript"></script>
   <script src="src/screen-main.js" type="text/javascript"></script>
+  <script src="src/screen-study.js" type="text/javascript"></script>
+  <script src="src/screen-review.js" type="text/javascript"></script>
 
   <script async defer src="https://apis.google.com/js/api.js" onload="this.onload=function(){};srs.google.handleClientLoad()"
     onreadystatechange="if (this.readyState === 'complete') this.onload()"></script>
