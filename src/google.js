@@ -31,7 +31,8 @@
     function notifySigninStatusChanged(isSignedIn) {
         if (!isSignedIn) {
             srs.setScreenSignIn();
-        } else {
+        }
+        else {
             srs.setScreenMain();
         }
     }

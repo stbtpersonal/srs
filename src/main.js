@@ -37,8 +37,15 @@
         srs.screenStudy.startNewSession();
     }
 
-    function setScreenReview() {
+    function setScreenReview(quizEntries) {
         setScreen(reviewScreenElement);
+
+        if (quizEntries) {
+            srs.screenReview.startQuizSession(quizEntries);
+        }
+        else {
+            srs.screenReview.startReviewSession();
+        }
     }
 
     function findEntriesForStudy(entries) {

@@ -10,6 +10,7 @@
     var examplesElement = document.getElementById("study-examples");
     var previousButton = document.getElementById("study-previous");
     var nextButton = document.getElementById("study-next");
+    var quizButton = document.getElementById("study-quiz");
 
     var sessionEntries = [];
     var visibleEntryIndex = 0;
@@ -17,6 +18,7 @@
     homeButton.onclick = srs.setScreenMain;
     previousButton.onclick = goBack;
     nextButton.onclick = goForward;
+    quizButton.onclick = startQuiz;
 
     function startNewSession() {
         sessionEntries = [];
@@ -61,6 +63,10 @@
 
         visibleEntryIndex++;
         refreshEntry();
+    }
+
+    function startQuiz() {
+        srs.setScreenReview(sessionEntries);
     }
 
     srs.screenStudy = {
