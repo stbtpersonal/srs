@@ -20,9 +20,28 @@
 
     <div><span>Study: </span><span id="study-amount">?</span></div>
     <div><span>Review: </span><span id="review-amount">?</span></div>
+
+    <button id="study">Study</button>
   </div>
 
-  <script src="main.js" type="text/javascript"></script>
+  <div id="study-screen" style="display: none;">
+    <div><span>Japanese: </span><span id="srs-japanese"></span></div>
+    <div><span>English: </span><span id="srs-english"></span></div>
+    <div><span>Mnemonic: </span><span id="srs-mnemonic"></span></div>
+    <div>
+      <span>Examples:</span>
+      <div id="srs-examples"></div>
+    </div>
+    <div>
+      <button id="study-previous">Previous</button><button id="study-next">Next</button>
+    </div>
+  </div>
+
+  <script src="src/main.js" type="text/javascript"></script>
+  <script src="src/google.js" type="text/javascript"></script>
+  <script src="src/signin.js" type="text/javascript"></script>
+  <script src="src/database.js" type="text/javascript"></script>
+  <script src="src/screen-main.js" type="text/javascript"></script>
 
   <script async defer src="https://apis.google.com/js/api.js" onload="this.onload=function(){};srs.google.handleClientLoad()"
     onreadystatechange="if (this.readyState === 'complete') this.onload()"></script>
