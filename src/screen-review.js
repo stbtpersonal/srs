@@ -199,7 +199,7 @@
 
     function transformInput() {
         var lowerCaseInput = translationInputElement.value.toLowerCase();
-        
+
         var visibleEntry = sessionEntries[visibleEntryIndex];
         if (visibleEntry.type === ENTRY_TYPE_J_TO_E) {
             translationInputElement.value = lowerCaseInput;
@@ -251,6 +251,11 @@
         }
         else {
             translationInputElement.style.backgroundColor = "green";
+            var removed = sessionEntries.splice(visibleEntryIndex, 1)[0];
+            var isEntryFinished = sessionEntries.filter(function(entry) { return entry.srsEntry === removed.srsEntry; }).length === 0;
+            if (isEntryFinished) {
+                // Commit that entry to the database.
+            }
         }
     }
 
