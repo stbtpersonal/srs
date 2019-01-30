@@ -5,138 +5,34 @@
     var ENTRY_TYPE_E_TO_J = "E_TO_J";
 
     var INPUT_TRANSFORMATION_DICTIONARY = {
-        "a": "あ",
-        "i": "い",
-        "u": "う",
-        "e": "え",
-        "o": "お",
+        "a": "あ", "i": "い", "u": "う", "e": "え", "o": "お",
+        "ka": "か", "ki": "き", "ku": "く", "ke": "け", "ko": "こ",
+        "sa": "さ", "shi": "し", "su": "す", "se": "せ", "so": "そ",
+        "ta": "た", "chi": "ち", "tsu": "つ", "te": "て", "to": "と",
+        "na": "な", "ni": "に", "nu": "ぬ", "ne": "ね", "no": "の",
+        "ha": "は", "hi": "ひ", "fu": "ふ", "he": "へ", "ho": "ほ",
+        "ma": "ま", "mi": "み", "mu": "む", "me": "め", "mo": "も",
+        "ya": "や", "yu": "ゆ", "yo": "よ",
+        "ra": "ら", "ri": "り", "ru": "る", "re": "れ", "ro": "ろ",
+        "wa": "わ", "wo": "を", "nn": "ん",
 
-        "ka": "か",
-        "ki": "き",
-        "ku": "く",
-        "ke": "け",
-        "ko": "こ",
+        "ga": "が", "gi": "ぎ", "gu": "ぐ", "ge": "げ", "go": "ご",
+        "za": "ざ", "ji": "じ", "zu": "ず", "ze": "ぜ", "zo": "ぞ",
+        "da": "だ", "di": "ぢ", "du": "づ", "de": "で", "do": "ど",
+        "ba": "ば", "bi": "び", "bu": "ぶ", "be": "べ", "bo": "ぼ",
+        "pa": "ぱ", "pi": "ぴ", "pu": "ぷ", "pe": "ぺ", "po": "ぽ",
 
-        "sa": "さ",
-        "shi": "し",
-        "su": "す",
-        "se": "せ",
-        "so": "そ",
-
-        "ta": "た",
-        "chi": "ち",
-        "tsu": "つ",
-        "te": "て",
-        "to": "と",
-        
-        "na": "な",
-        "ni": "に",
-        "nu": "ぬ",
-        "ne": "ね",
-        "no": "の",
-        
-        "ha": "は",
-        "hi": "ひ",
-        "fu": "ふ",
-        "he": "へ",
-        "ho": "ほ",
-        
-        "ma": "ま",
-        "mi": "み",
-        "mu": "む",
-        "me": "め",
-        "mo": "も",
-        
-        "ya": "や",
-        "yu": "ゆ",
-        "yo": "よ",
-        
-        "ra": "ら",
-        "ri": "り",
-        "ru": "る",
-        "re": "れ",
-        "ro": "ろ",
-        
-        "wa": "わ",
-        "wo": "を",
-        "nn": "ん",
-
-        "ga": "が",
-        "gi": "ぎ",
-        "gu": "ぐ",
-        "ge": "げ",
-        "go": "ご",
-
-        "za": "ざ",
-        "ji": "じ",
-        "zu": "ず",
-        "ze": "ぜ",
-        "zo": "ぞ",
-
-        "da": "だ",
-        "di": "ぢ",
-        "du": "づ",
-        "de": "で",
-        "do": "ど",
-
-        "ba": "ば",
-        "bi": "び",
-        "bu": "ぶ",
-        "be": "べ",
-        "bo": "ぼ",
-
-        "pa": "ぱ",
-        "pi": "ぴ",
-        "pu": "ぷ",
-        "pe": "ぺ",
-        "po": "ぽ",
-
-        "kya": "きゃ",
-        "kyu": "きゅ",
-        "kyo": "きょ",
-
-        "gya": "ぎゃ",
-        "gyu": "ぎゅ",
-        "gyo": "ぎょ",
-
-        "nya": "にゃ",
-        "nyu": "にゅ",
-        "nyo": "にょ",
-
-        "hya": "ひゃ",
-        "hyu": "ひゅ",
-        "hyo": "ひょ",
-
-        "bya": "びゃ",
-        "byu": "びゅ",
-        "byo": "びょ",
-
-        "pya": "ぴゃ",
-        "pyu": "ぴゅ",
-        "pyo": "ぴょ",
-
-        "mya": "みゃ",
-        "myu": "みゅ",
-        "myo": "みょ",
-
-        "rya": "りゃ",
-        "ryu": "りゅ",
-        "ryo": "りょ",
-
-        "sha": "しゃ",
-        "shu": "しゅ",
-        "she": "しぇ",
-        "sho": "しょ",
-
-        "ja": "じゃ",
-        "ju": "じゅ",
-        "je": "じぇ",
-        "jo": "じょ",
-
-        "cha": "ちゃ",
-        "chu": "ちゅ",
-        "che": "ちぇ",
-        "cho": "ちょ",
+        "kya": "きゃ", "kyu": "きゅ", "kyo": "きょ",
+        "gya": "ぎゃ", "gyu": "ぎゅ", "gyo": "ぎょ",
+        "nya": "にゃ", "nyu": "にゅ", "nyo": "にょ",
+        "hya": "ひゃ", "hyu": "ひゅ", "hyo": "ひょ",
+        "bya": "びゃ", "byu": "びゅ", "byo": "びょ",
+        "pya": "ぴゃ", "pyu": "ぴゅ", "pyo": "ぴょ",
+        "mya": "みゃ", "myu": "みゅ", "myo": "みょ",
+        "rya": "りゃ", "ryu": "りゅ", "ryo": "りょ",
+        "sha": "しゃ", "shu": "しゅ", "she": "しぇ", "sho": "しょ",
+        "ja": "じゃ", "ju": "じゅ", "je": "じぇ", "jo": "じょ",
+        "cha": "ちゃ", "chu": "ちゅ", "che": "ちぇ", "cho": "ちょ",
     };
 
     var homeButton = document.getElementById("review-home");
@@ -252,9 +148,11 @@
         else {
             translationInputElement.style.backgroundColor = "green";
             var removed = sessionEntries.splice(visibleEntryIndex, 1)[0];
-            var isEntryFinished = sessionEntries.filter(function(entry) { return entry.srsEntry === removed.srsEntry; }).length === 0;
+            var isEntryFinished = sessionEntries.filter(function (entry) { return entry.srsEntry === removed.srsEntry; }).length === 0;
             if (isEntryFinished) {
-                // Commit that entry to the database.
+                removed.srsEntry.srsData.level++;
+                removed.srsEntry.srsData.time = new Date().getTime();
+                srs.database.updateEntry(removed.srsEntry);
             }
         }
     }

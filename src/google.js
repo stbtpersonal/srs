@@ -1,6 +1,8 @@
 (function () {
     "use strict";
 
+    var SHEET_NAME = "SRS";
+
     var signInButton = document.getElementById("sign-in");
     var signOutButton = document.getElementById("sign-out");
 
@@ -49,7 +51,7 @@
         return new Promise(function (resolve, reject) {
             gapi.client.drive.files.list({
                 "fields": "files(id, name)",
-                "q": "mimeType = 'application/vnd.google-apps.spreadsheet' and name contains '[SRS]'"
+                "q": "mimeType = 'application/vnd.google-apps.spreadsheet' and name contains '[" + SHEET_NAME + "]'"
             }).then(function (response) {
                 resolve(response.result.files);
             }, function (response) {
@@ -58,13 +60,28 @@
         });
     }
 
-    function fetchRows(spreadsheetId, column) {
+    function fetchRows(spreadsheetId, range) {
         return new Promise(function (resolve, reject) {
             gapi.client.sheets.spreadsheets.values.get({
                 spreadsheetId: spreadsheetId,
-                range: "SRS!" + column,
+                range: SHEET_NAME + "!" + range,
             }).then(function (response) {
                 resolve(response.result.values);
+            }, function (response) {
+                reject(response.result.error.message);
+            });
+        });
+    }
+
+    function updateCells(spreadsheetId, range, values) {
+        return new Promise(function (resolve, reject) {
+            gapi.client.sheets.spreadsheets.values.update({
+                spreadsheetId: spreadsheetId,
+                range: SHEET_NAME + "!" + range,
+                valueInputOption: "RAW",
+                resource: { values: values },
+            }).then(function (response) {
+                resolve(response.result.files);
             }, function (response) {
                 reject(response.result.error.message);
             });
@@ -75,5 +92,6 @@
         handleClientLoad: handleClientLoad,
         fetchSpreadsheets: fetchSpreadsheets,
         fetchRows: fetchRows,
+        updateCells: updateCells,
     };
 })();

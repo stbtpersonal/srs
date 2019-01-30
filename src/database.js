@@ -1,12 +1,17 @@
 (function () {
     "use strict";
 
+    var START_COLUMN_NAME = "B";
+    var START_ROW_INDEX = 2;
+
     var COLUMN_INDEX_JAPANESE = 0;
     var COLUMN_INDEX_ENGLISH = 1;
     var COLUMN_INDEX_MNEMONIC = 2;
     var COLUMN_INDEX_EXAMPLES = 3;
     var COLUMN_INDEX_LEVEL = 4;
     var COLUMN_INDEX_TIME = 5;
+
+    var END_COLUMN_INDEX = COLUMN_INDEX_TIME;
 
     var entriesCache = [];
 
@@ -22,7 +27,8 @@
                 }
 
                 var spreadsheet = remainingSpreadsheets.pop();
-                srs.google.fetchRows(spreadsheet.id, "B2:I").then(function (rows) {
+                var range = getColumnName(0) + START_ROW_INDEX + ":" + getColumnName(END_COLUMN_INDEX);
+                srs.google.fetchRows(spreadsheet.id, range).then(function (rows) {
                     for (var i = 0; i < rows.length; i++) {
                         var row = rows[i];
                         var srsData = deserializeSrsData(row);
@@ -30,7 +36,7 @@
                             var databaseEntry = {
                                 srsData: srsData,
                                 spreadsheetId: spreadsheet.id,
-                                spreadsheetRow: 2 + i,
+                                spreadsheetRow: START_ROW_INDEX + i,
                             };
                             entries.push(databaseEntry);
                         }
@@ -41,6 +47,10 @@
 
             srs.google.fetchSpreadsheets().then(fetchNextRows);
         });
+    }
+
+    function getColumnName(index) {
+        return String.fromCharCode(START_COLUMN_NAME.charCodeAt(0) + index);
     }
 
     function deserializeSrsData(serializedData) {
@@ -80,8 +90,14 @@
         return entriesCache.slice();
     }
 
+    function updateEntry(entry) {
+        var range = getColumnName(COLUMN_INDEX_LEVEL) + entry.spreadsheetRow + ":" + getColumnName(COLUMN_INDEX_TIME) + entry.spreadsheetRow;
+        srs.google.updateCells(entry.spreadsheetId, range, [[entry.srsData.level, entry.srsData.time]]);
+    }
+
     srs.database = {
         refreshEntries: refreshEntries,
         getEntries: getEntries,
+        updateEntry: updateEntry,
     };
 })();
