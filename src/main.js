@@ -33,10 +33,33 @@
 
     function setScreenStudy() {
         setScreen(studyScreenElement);
+
+        srs.screenStudy.startNewSession();
     }
 
     function setScreenReview() {
         setScreen(reviewScreenElement);
+    }
+
+    function findEntriesForStudy(entries) {
+        return entries.filter(function (entry) {
+            return entry.srsData.level == 0;
+        });
+    }
+
+    function findEntriesForReview(entries) {
+        var now = Date.now();
+        return entries.filter(function (entry) {
+            var srsLevel = entry.srsData.level;
+            if (!srsLevel) {
+                return false;
+            }
+
+            var levelDurationInHours = Math.pow(2, srsLevel);
+            var levelDurationInMillis = levelDurationInHours * 60 * 60 * 1000;
+
+            return entry.srsData.time + levelDurationInMillis < now;
+        });
     }
 
     window.srs = {
@@ -45,5 +68,8 @@
         setScreenMain: setScreenMain,
         setScreenStudy: setScreenStudy,
         setScreenReview: setScreenReview,
+
+        findEntriesForStudy: findEntriesForStudy,
+        findEntriesForReview: findEntriesForReview,
     };
 })();

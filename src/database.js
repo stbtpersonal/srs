@@ -17,7 +17,7 @@
             function fetchNextRows(remainingSpreadsheets) {
                 if (remainingSpreadsheets.length == 0) {
                     entriesCache = entries;
-                    resolve();
+                    resolve(entriesCache);
                     return;
                 }
 
