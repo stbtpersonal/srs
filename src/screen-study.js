@@ -15,10 +15,10 @@
     var sessionEntries = [];
     var visibleEntryIndex = 0;
 
-    homeButton.onclick = srs.setScreenMain;
-    previousButton.onclick = goBack;
-    nextButton.onclick = goForward;
-    quizButton.onclick = startQuiz;
+    homeButton.onclick = function () { srs.setScreenMain() };
+    previousButton.onclick = function () { goBack() };
+    nextButton.onclick = function () { goForward() };
+    quizButton.onclick = function () { startQuiz() };
 
     function startNewSession() {
         sessionEntries = [];

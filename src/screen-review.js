@@ -46,20 +46,32 @@
     var sessionEntries = [];
     var visibleEntryIndex = 0;
 
-    homeButton.onclick = srs.setScreenMain;
-    translationInputElement.oninput = transformInput;
-    submitButton.onclick = submit;
-    nextButton.onclick = refreshEntry;
+    homeButton.onclick = function () { srs.setScreenMain() };
+    translationInputElement.oninput = function () { transformInput() };
+    submitButton.onclick = function () { submit() };
+    nextButton.onclick = function () { refreshEntry() };
 
     function startQuizSession(quizEntries) {
-        sessionEntries = [];
-        visibleEntryIndex = 0;
-        buildSessionEntries(quizEntries);
-        refreshEntry();
+        reset();
+        startSession(quizEntries);
     }
 
     function startReviewSession() {
+        reset();
+        srs.database.refreshEntries().then(function (entries) {
+            var reviewEntries = srs.findEntriesForReview(entries);
+            startSession(reviewEntries);
+        });
+    }
 
+    function reset() {
+        sessionEntries = [];
+        visibleEntryIndex = 0;
+    }
+
+    function startSession(entries) {
+        buildSessionEntries(entries);
+        refreshEntry();
     }
 
     function buildSessionEntries(entries) {

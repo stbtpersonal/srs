@@ -39,7 +39,7 @@
 
     function setScreenReview(quizEntries) {
         setScreen(reviewScreenElement);
-
+        
         if (quizEntries) {
             srs.screenReview.startQuizSession(quizEntries);
         }

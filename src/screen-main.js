@@ -6,8 +6,8 @@
     var studyButton = document.getElementById("study");
     var reviewButton = document.getElementById("review");
 
-    studyButton.onclick = srs.setScreenStudy;
-    reviewButton.onclick = srs.setScreenReview;
+    studyButton.onclick = function () { srs.setScreenStudy() };
+    reviewButton.onclick = function () { srs.setScreenReview() };
 
     function refresh() {
         studyAmountElement.innerHTML = "?";
