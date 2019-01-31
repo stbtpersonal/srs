@@ -46,8 +46,8 @@
 
         var visibleEntry = sessionEntries[visibleEntryIndex];
 
-        japaneseElement.innerHTML = visibleEntry.srsData.japanese;
-        englishElement.innerHTML = visibleEntry.srsData.english;
+        japaneseElement.innerHTML = visibleEntry.srsData.japanese[0];
+        englishElement.innerHTML = visibleEntry.srsData.english[0];
         mnemonicElement.innerHTML = visibleEntry.srsData.mnemonic;
         examplesElement.innerHTML = "";
 

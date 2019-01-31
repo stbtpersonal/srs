@@ -130,9 +130,85 @@ div {
 .main-button-caption {
     margin: 5px 0 0 0;
     text-align: center;
-    text-align: center;
     text-decoration: none;
     font-family: 'Roboto', arial, sans-serif;
     font-size: 20px;
     color: rgb(175, 175, 175);
+}
+
+.study-header {
+    position: relative;
+    height: 30vh;
+    background-color: rgb(175, 175, 175);
+    padding-top: 20px;
+}
+
+.study-home {
+    padding: 20px;
+    text-align: center;
+    text-decoration: none;
+    font-family: 'Roboto', arial, sans-serif;
+    font-size: 20px;
+    color: rgb(100, 100, 100);
+    cursor: pointer;
+}
+
+.study-japanese {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    text-decoration: none;
+    font-family: 'Roboto', arial, sans-serif;
+    font-weight: bold;
+    font-size: 100px;
+    color: white;
+}
+
+.study-english-container {
+    position: relative;
+    height: 20vh;
+    background-color: rgb(100, 100, 100);
+}
+
+.study-english {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    text-decoration: none;
+    font-family: 'Roboto', arial, sans-serif;
+    font-weight: bold;
+    font-size: 100px;
+    color: rgb(200, 200, 200);
+}
+
+.study-previous {
+    text-align: center;
+    text-decoration: none;
+    font-family: 'Roboto', arial, sans-serif;
+    font-weight: bold;
+    font-size: 100px;
+    color: rgb(175, 175, 175);
+    float: left;
+    margin-left: 30px;
+    line-height: 20vh;
+}
+
+.study-next {
+    text-align: center;
+    text-decoration: none;
+    font-family: 'Roboto', arial, sans-serif;
+    font-weight: bold;
+    font-size: 100px;
+    color: rgb(175, 175, 175);
+    float: right;
+    margin-right: 30px;
+    line-height: 20vh;
+}
+
+.study-details {
+    margin: 30px 130px;
 }

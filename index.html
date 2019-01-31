@@ -47,16 +47,21 @@
   </div>
 
   <div id="study-screen" style="display: none;">
-    <div><button id="study-home">Home</button></div>
-    <div><span>Japanese: </span><span id="study-japanese"></span></div>
-    <div><span>English: </span><span id="study-english"></span></div>
-    <div><span>Mnemonic: </span><span id="study-mnemonic"></span></div>
-    <div>
-      <span>Examples:</span>
-      <div id="study-examples"></div>
+    <div class="study-header">
+      <span id="study-home" class="study-home">Home</span>
+      <span id="study-japanese" class="study-japanese"></span>
     </div>
-    <div>
-      <button id="study-previous">Previous</button><button id="study-next">Next</button>
+    <div class="study-english-container">
+      <span id="study-previous" class="study-previous">&lt;</span>
+      <span id="study-english" class="study-english"></span>
+      <span id="study-next" class="study-next">&gt;</span>
+    </div>
+    <div class="study-details">
+        <div><span>Mnemonic: </span><span id="study-mnemonic"></span></div>
+        <div>
+          <span>Examples:</span>
+          <div id="study-examples"></div>
+        </div>
     </div>
   </div>
 
