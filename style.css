@@ -59,25 +59,23 @@ div {
     border-radius: 5px;
     white-space: nowrap;
     box-shadow: 1px 1px 0px 1px rgba(0, 0, 0, 0.05);
-    transition-property: background-color, box-shadow;
-    transition-duration: 150ms;
-    transition-timing-function: ease-in-out;
     padding: 0;
 }
 
 .google-button-icon {
     display: inline-block;
     vertical-align: middle;
-    margin: 8px 0 8px 8px;
+    margin: 8px 12px 8px 16px;
     width: 18px;
     height: 18px;
     box-sizing: border-box;
+    background: url("data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMzY2IDM3MiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICAgICAgICAgIDxwYXRoIGQ9Ik0xMjUuOSAxMC4yYzQwLjItMTMuOSA4NS4zLTEzLjYgMTI1LjMgMS4xIDIyLjIgOC4yIDQyLjUgMjEgNTkuOSAzNy4xLTUuOCA2LjMtMTIuMSAxMi4yLTE4LjEgMTguM2wtMzQuMiAzNC4yYy0xMS4zLTEwLjgtMjUuMS0xOS00MC4xLTIzLjYtMTcuNi01LjMtMzYuNi02LjEtNTQuNi0yLjItMjEgNC41LTQwLjUgMTUuNS01NS42IDMwLjktMTIuMiAxMi4zLTIxLjQgMjcuNS0yNyA0My45LTIwLjMtMTUuOC00MC42LTMxLjUtNjEtNDcuMyAyMS41LTQzIDYwLjEtNzYuOSAxMDUuNC05Mi40eiIKICAgICAgICAgICAgaWQ9IlNoYXBlIiBmaWxsPSIjRUE0MzM1IiAvPgogICAgICAgICAgPHBhdGggZD0iTTIwLjYgMTAyLjRjMjAuMyAxNS44IDQwLjYgMzEuNSA2MSA0Ny4zLTggMjMuMy04IDQ5LjIgMCA3Mi40LTIwLjMgMTUuOC00MC42IDMxLjYtNjAuOSA0Ny4zQzEuOSAyMzIuNy0zLjggMTg5LjYgNC40IDE0OS4yYzMuMy0xNi4yIDguNy0zMiAxNi4yLTQ2Ljh6IgogICAgICAgICAgICBpZD0iU2hhcGUiIGZpbGw9IiNGQkJDMDUiIC8+CiAgICAgICAgICA8cGF0aCBkPSJNMzYxLjcgMTUxLjFjNS44IDMyLjcgNC41IDY2LjgtNC43IDk4LjgtOC41IDI5LjMtMjQuNiA1Ni41LTQ3LjEgNzcuMmwtNTkuMS00NS45YzE5LjUtMTMuMSAzMy4zLTM0LjMgMzcuMi01Ny41SDE4Ni42Yy4xLTI0LjIuMS00OC40LjEtNzIuNmgxNzV6IgogICAgICAgICAgICBpZD0iU2hhcGUiIGZpbGw9IiM0Mjg1RjQiIC8+CiAgICAgICAgICA8cGF0aCBkPSJNODEuNCAyMjIuMmM3LjggMjIuOSAyMi44IDQzLjIgNDIuNiA1Ny4xIDEyLjQgOC43IDI2LjYgMTQuOSA0MS40IDE3LjkgMTQuNiAzIDI5LjcgMi42IDQ0LjQuMSAxNC42LTIuNiAyOC43LTcuOSA0MS0xNi4ybDU5LjEgNDUuOWMtMjEuMyAxOS43LTQ4IDMzLjEtNzYuMiAzOS42LTMxLjIgNy4xLTY0LjIgNy4zLTk1LjItMS0yNC42LTYuNS00Ny43LTE4LjItNjcuNi0zNC4xLTIwLjktMTYuNi0zOC4zLTM4LTUwLjQtNjIgMjAuMy0xNS43IDQwLjYtMzEuNSA2MC45LTQ3LjN6IgogICAgICAgICAgICBmaWxsPSIjMzRBODUzIiAvPjwvc3ZnPg==");
 }
 
 .google-button-text {
     display: inline-block;
     vertical-align: middle;
-    padding: 0 24px;
+    padding: 0 20px 0 0;
     font-size: 14px;
     font-weight: bold;
     font-family: 'Roboto', arial, sans-serif;
