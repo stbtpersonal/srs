@@ -18,6 +18,15 @@
     previousButton.onclick = function () { goBack() };
     nextButton.onclick = function () { goForward() };
 
+    document.addEventListener("keyup", function (event) {
+        if (event.key === "ArrowLeft") {
+            goBack();
+        }
+        else if (event.key === "ArrowRight") {
+            goForward();
+        }
+    });
+
     function startNewSession() {
         sessionEntries = [];
         visibleEntryIndex = 0;

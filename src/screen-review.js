@@ -52,6 +52,12 @@
     translationInputElement.oninput = function () { transformInput() };
     nextButton.onclick = function () { goForward() };
 
+    document.addEventListener("keyup", function (event) {
+        if (event.key === "Enter" || event.key === "NumpadEnter") {
+            goForward();
+        }
+    });
+
     function startQuizSession(quizEntries) {
         reset();
         isQuizSession = true;
@@ -115,6 +121,7 @@
 
         translationInputElement.value = "";
         translationInputElement.style.backgroundColor = "";
+        translationInputElement.focus();
         isReviewingAnswer = false;
     }
 
