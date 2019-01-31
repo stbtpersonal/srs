@@ -145,7 +145,7 @@ div {
 .study-header {
     position: relative;
     height: 30vh;
-    background-color: rgb(175, 175, 175);
+    background-color: lightblue;
     padding-top: 20px;
 }
 
@@ -175,7 +175,11 @@ div {
 .study-english-container {
     position: relative;
     height: 20vh;
-    background-color: rgb(100, 100, 100);
+    background-color: white;
+    margin: 1vmin;
+    border-width: 0.5vmin;
+    border-style: solid;
+    border-color: rgb(225, 225, 225);
 }
 
 .study-english {
@@ -199,8 +203,9 @@ div {
     font-size: 10vmin;
     color: rgb(175, 175, 175);
     float: left;
-    margin-left: 5vw;
+    padding: 0 1.5vw;
     line-height: 20vh;
+    cursor: pointer;
 }
 
 .study-next {
@@ -211,8 +216,9 @@ div {
     font-size: 10vmin;
     color: rgb(175, 175, 175);
     float: right;
-    margin-right: 5vh;
+    padding: 0 1.5vw;
     line-height: 20vh;
+    cursor: pointer;
 }
 
 .study-details {
