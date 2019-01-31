@@ -22,14 +22,27 @@
     </button>
   </div>
 
-  <div id="main-screen" style="display: none;">
-    <button id="sign-out">Sign Out</button>
-
-    <div><span>Study: </span><span id="study-amount">?</span></div>
-    <div><span>Review: </span><span id="review-amount">?</span></div>
-
-    <button id="study">Study</button>
-    <button id="review">Review</button>
+  <div id="main-screen" class="sign-in-container" style="display: none;">
+    <div class="main-top-bar">
+      <button id="study" class="main-button main-button-left">
+        <div class="main-button-circle">
+          <span id="study-amount" class="main-button-contents">?</span>
+        </div>
+        <div class="main-button-caption">Study</div>
+      </button>
+      <button id="review" class="main-button main-button-left">
+        <div class="main-button-circle">
+          <span id="review-amount" class="main-button-contents">?</span>
+        </div>
+        <div class="main-button-caption">Review</div>
+      </button>
+      <button id="sign-out" class="main-button main-button-right">
+        <div class="main-button-circle">
+          <span class="google-button-icon main-button-contents"></span>
+        </div>
+        <div class="main-button-caption">Sign Out</div>
+      </button>
+    </div>
   </div>
 
   <div id="study-screen" style="display: none;">
