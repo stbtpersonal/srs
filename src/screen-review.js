@@ -35,7 +35,7 @@
         "cha": "ちゃ", "chu": "ちゅ", "che": "ちぇ", "cho": "ちょ",
     };
 
-    var CONSONANTS = ["k", "s", "t", "n", "h", "m", "y", "r", "w", "g", "z", "d", "b", "p", "j", "c"];
+    var SMALL_TSU_CONSONANTS = ["k", "s", "t", "h", "m", "y", "r", "w", "g", "z", "d", "b", "p", "j", "c"];
 
     var homeButton = document.getElementById("review-home");
     var toTranslateElement = document.getElementById("review-to-translate");
@@ -119,14 +119,14 @@
             return false;
         }
 
-        function tryTsuTransform() {
+        function trySmallTsuTransform() {
             if (originalInput.length < 2) {
                 return false;
             }
 
             var firstCharacter = originalInput[0];
             var secondCharacter = originalInput[1];
-            if (CONSONANTS.includes(firstCharacter) && firstCharacter === secondCharacter) {
+            if (SMALL_TSU_CONSONANTS.includes(firstCharacter) && firstCharacter === secondCharacter) {
                 transformedInput += "っ";
                 originalInput = originalInput.substring(1);
                 return true;
@@ -145,7 +145,7 @@
             }
 
             if (!success) {
-                success = tryTsuTransform();
+                success = trySmallTsuTransform();
             }
 
             if (!success) {
