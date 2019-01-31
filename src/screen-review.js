@@ -204,7 +204,7 @@
             }
             else {
                 var level = entry.srsEntry.srsData.level;
-                entry.srsEntry.srsData.level = level === 1 ? 1 : level - 1;
+                entry.srsEntry.srsData.level = level <= 1 ? 1 : level - 1;
             }
             entry.srsEntry.srsData.time = new Date().getTime();
 
