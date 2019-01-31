@@ -32,6 +32,11 @@
     }
 
     function refreshEntry() {
+        if (sessionEntries.length === 0) {
+            endSession();
+            return;
+        }
+
         var visibleEntry = sessionEntries[visibleEntryIndex];
 
         japaneseElement.innerHTML = visibleEntry.srsData.japanese;
@@ -67,6 +72,10 @@
 
     function startQuiz() {
         srs.setScreenReview(sessionEntries);
+    }
+
+    function endSession() {
+        srs.setScreenMain();
     }
 
     srs.screenStudy = {

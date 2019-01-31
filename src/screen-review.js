@@ -43,6 +43,7 @@
     var submitButton = document.getElementById("review-submit");
     var nextButton = document.getElementById("review-next");
 
+    var isQuizSession = false;
     var sessionEntries = [];
     var visibleEntryIndex = 0;
     var wrongEntries = [];
@@ -54,6 +55,7 @@
 
     function startQuizSession(quizEntries) {
         reset();
+        isQuizSession = true;
         startSession(quizEntries);
     }
 
@@ -66,6 +68,7 @@
     }
 
     function reset() {
+        isQuizSession = false;
         sessionEntries = [];
         visibleEntryIndex = 0;
         wrongEntries = [];
@@ -92,6 +95,11 @@
     }
 
     function refreshEntry() {
+        if (sessionEntries.length === 0) {
+            endSession();
+            return;
+        }
+
         var randomIndex = Math.floor(Math.random() * sessionEntries.length);
         var visibleEntry = sessionEntries[randomIndex];
 
@@ -214,6 +222,15 @@
 
     function containsEntry(entries, toFind) {
         return entries.filter(function (entry) { return entry.srsEntry === toFind.srsEntry }).length > 0;
+    }
+
+    function endSession() {
+        if (isQuizSession) {
+            srs.setScreenStudy();
+        }
+        else {
+            srs.setScreenMain();
+        }
     }
 
     srs.screenReview = {
