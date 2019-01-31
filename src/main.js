@@ -69,6 +69,8 @@
         });
     }
 
+    setScreenInitializing();
+
     window.srs = {
         setScreenInitializing: setScreenInitializing,
         setScreenSignIn: setScreenSignIn,
