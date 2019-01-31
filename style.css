@@ -108,13 +108,20 @@ div {
 }
 
 .main-button-circle {
+    position: relative;
     background-color: rgb(175, 175, 175);
     width: 75px;
     height: 75px;
     display: inline-block;
     margin: auto;
     border-radius: 50%;
-    position: relative;
+}
+
+.main-button-circle-google {
+    border-width: 2px;
+    border-style: solid;
+    border-color: rgb(175, 175, 175);
+    background-color: white;
 }
 
 .main-button-contents {
@@ -126,11 +133,9 @@ div {
     text-align: center;
     text-decoration: none;
     font-family: 'Roboto', arial, sans-serif;
-    font-size: 40px;
+    font-size: 30px;
     font-weight: bold;
     color: white;
-    width: 40px;
-    height: 40px;
 }
 
 .main-button-caption {
@@ -177,6 +182,7 @@ div {
     font-weight: bold;
     font-size: 10vmin;
     color: white;
+    width: 100%;
 }
 
 .study-review-translation-container {
