@@ -45,6 +45,7 @@
 
     var sessionEntries = [];
     var visibleEntryIndex = 0;
+    var wrongEntries = [];
 
     homeButton.onclick = function () { srs.setScreenMain() };
     translationInputElement.oninput = function () { transformInput() };
@@ -67,6 +68,7 @@
     function reset() {
         sessionEntries = [];
         visibleEntryIndex = 0;
+        wrongEntries = [];
     }
 
     function startSession(entries) {
@@ -178,17 +180,40 @@
 
         if (!expectedAnswers.includes(answer)) {
             translationInputElement.style.backgroundColor = "red";
+            markEntryWrong(visibleEntry);
         }
         else {
             translationInputElement.style.backgroundColor = "green";
-            var removed = sessionEntries.splice(visibleEntryIndex, 1)[0];
-            var isEntryFinished = sessionEntries.filter(function (entry) { return entry.srsEntry === removed.srsEntry; }).length === 0;
-            if (isEntryFinished) {
-                removed.srsEntry.srsData.level++;
-                removed.srsEntry.srsData.time = new Date().getTime();
-                srs.database.updateEntry(removed.srsEntry);
-            }
+            sessionEntries.splice(visibleEntryIndex, 1);
+            tryCommitEntry(visibleEntry);
         }
+    }
+
+    function markEntryWrong(entry) {
+        if (!containsEntry(wrongEntries, entry)) {
+            wrongEntries.push(entry);
+        }
+    }
+
+    function tryCommitEntry(entry) {
+        var isEntryFinished = !containsEntry(sessionEntries, entry);
+        if (isEntryFinished) {
+            var hasGotEntryRight = !containsEntry(wrongEntries, entry);
+            if (hasGotEntryRight) {
+                entry.srsEntry.srsData.level++;
+            }
+            else {
+                var level = entry.srsEntry.srsData.level;
+                entry.srsEntry.srsData.level = level === 1 ? 1 : level - 1;
+            }
+            entry.srsEntry.srsData.time = new Date().getTime();
+
+            srs.database.updateEntry(entry.srsEntry);
+        }
+    }
+
+    function containsEntry(entries, toFind) {
+        return entries.filter(function (entry) { return entry.srsEntry === toFind.srsEntry }).length > 0;
     }
 
     srs.screenReview = {
