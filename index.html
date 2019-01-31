@@ -47,16 +47,16 @@
   </div>
 
   <div id="study-screen" style="display: none;">
-    <div class="study-header">
-      <span id="study-home" class="study-home">Home</span>
-      <span id="study-japanese" class="study-japanese"></span>
+    <div class="study-review-header study-header">
+      <span id="study-home" class="study-review-home">Home</span>
+      <span id="study-japanese" class="study-review-to-translate"></span>
     </div>
-    <div class="study-english-container">
-      <span id="study-previous" class="study-previous">&lt;</span>
-      <span id="study-english" class="study-english"></span>
-      <span id="study-next" class="study-next">&gt;</span>
+    <div class="study-review-translation-container">
+      <span id="study-previous" class="study-review-previous">&lt;</span>
+      <span id="study-english" class="study-review-translation"></span>
+      <span id="study-next" class="study-review-next">&gt;</span>
     </div>
-    <div class="study-details">
+    <div class="study-review-details">
         <div><span>Mnemonic: </span><span id="study-mnemonic"></span></div>
         <div>
           <span>Examples:</span>
@@ -66,10 +66,15 @@
   </div>
 
   <div id="review-screen" style="display: none;">
-    <div><button id="review-home">Home</button></div>
-    <div><span>Word: </span><span id="review-to-translate"></span></div>
-    <div><span>Translation: </span><input id="review-translation" type="text"></input></div>
-    <div><button id="review-next">Next</button></div>
+    <div class="study-review-header review-header">
+      <span id="review-home" class="study-review-home">Home</span>
+      <span id="review-to-translate" class="study-review-to-translate"></span>
+    </div>
+    <div class="study-review-translation-container">
+      <input id="review-translation" class="study-review-translation review-translation"></input>
+      <div id="review-translation-overlay" class="study-review-translation review-translation"></div>
+      <span id="review-next" class="study-review-next">&gt;</span>
+    </div>
   </div>
 
   <link href="style.css" rel="stylesheet">

@@ -142,24 +142,31 @@ div {
     color: rgb(175, 175, 175);
 }
 
-.study-header {
+.study-review-header {
     position: relative;
     height: 30vh;
-    background-color: lightblue;
     padding-top: 20px;
 }
 
-.study-home {
+.study-header {
+    background-color: rgb(121, 217, 255);
+}
+
+.review-header {
+    background-color: rgb(255, 130, 130);
+}
+
+.study-review-home {
     padding: 20px;
     text-align: center;
     text-decoration: none;
     font-family: 'Roboto', arial, sans-serif;
     font-size: 2.5vh;
-    color: rgb(100, 100, 100);
+    color: white;
     cursor: pointer;
 }
 
-.study-japanese {
+.study-review-to-translate {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -172,7 +179,7 @@ div {
     color: white;
 }
 
-.study-english-container {
+.study-review-translation-container {
     position: relative;
     height: 20vh;
     background-color: white;
@@ -182,7 +189,7 @@ div {
     border-color: rgb(225, 225, 225);
 }
 
-.study-english {
+.study-review-translation {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -192,35 +199,44 @@ div {
     font-family: 'Roboto', arial, sans-serif;
     font-weight: bold;
     font-size: 10vmin;
-    color: rgb(200, 200, 200);
+    color: rgb(75, 75, 75);
 }
 
-.study-previous {
+.review-translation {
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    border: none;
+    z-index: 1;
+}
+
+.study-review-previous {
+    position: relative;
     text-align: center;
     text-decoration: none;
     font-family: 'Roboto', arial, sans-serif;
     font-weight: bold;
     font-size: 10vmin;
-    color: rgb(175, 175, 175);
+    color: rgb(75, 75, 75);
     float: left;
     padding: 0 1.5vw;
     line-height: 20vh;
     cursor: pointer;
 }
 
-.study-next {
+.study-review-next {
     text-align: center;
     text-decoration: none;
     font-family: 'Roboto', arial, sans-serif;
     font-weight: bold;
     font-size: 10vmin;
-    color: rgb(175, 175, 175);
+    color: rgb(75, 75, 75);
     float: right;
     padding: 0 1.5vw;
     line-height: 20vh;
     cursor: pointer;
 }
 
-.study-details {
+.study-review-details {
     margin: 5vh 10vw;
 }

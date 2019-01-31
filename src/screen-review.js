@@ -37,9 +37,14 @@
 
     var SMALL_TSU_CONSONANTS = ["k", "s", "t", "h", "m", "y", "r", "w", "g", "z", "d", "b", "p", "j", "c"];
 
+    var OVERLAY_GREEN = "rgba(0, 255, 0, 0.5)"
+    var OVERLAY_YELLOW = "rgba(255, 255, 0, 0.5)"
+    var OVERLAY_RED = "rgba(255, 0, 0, 0.5)"
+
     var homeButton = document.getElementById("review-home");
     var toTranslateElement = document.getElementById("review-to-translate");
     var translationInputElement = document.getElementById("review-translation");
+    var translationInputOverlayElement = document.getElementById("review-translation-overlay");
     var nextButton = document.getElementById("review-next");
 
     var isQuizSession = false;
@@ -120,7 +125,7 @@
         visibleEntryIndex = randomIndex;
 
         translationInputElement.value = "";
-        translationInputElement.style.backgroundColor = "";
+        translationInputOverlayElement.style.backgroundColor = "transparent";
         translationInputElement.focus();
         isReviewingAnswer = false;
     }
@@ -189,7 +194,7 @@
 
     function goForward() {
         if (!isAnswerValid()) {
-            translationInputElement.style.backgroundColor = "yellow";
+            translationInputOverlayElement.style.backgroundColor = OVERLAY_YELLOW;
         }
         else if (!isReviewingAnswer) {
             submit();
@@ -212,11 +217,11 @@
         var expectedAnswers = visibleEntry.type === ENTRY_TYPE_J_TO_E ? srsData.english : srsData.japanese;
 
         if (!expectedAnswers.includes(answer)) {
-            translationInputElement.style.backgroundColor = "red";
+            translationInputOverlayElement.style.backgroundColor = OVERLAY_RED;
             markEntryWrong(visibleEntry);
         }
         else {
-            translationInputElement.style.backgroundColor = "green";
+            translationInputOverlayElement.style.backgroundColor = OVERLAY_GREEN;
             sessionEntries.splice(visibleEntryIndex, 1);
             tryCommitEntry(visibleEntry);
         }
