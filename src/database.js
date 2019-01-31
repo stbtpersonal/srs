@@ -71,10 +71,10 @@
         var examples = serializedExamples ? serializedExamples.split("; ") : [];
 
         var serializedLevel = serializedData[COLUMN_INDEX_LEVEL];
-        var level = serializedLevel ? serializedLevel : 0;
+        var level = serializedLevel ? parseInt(serializedLevel) : 0;
 
         var serializedTime = serializedData[COLUMN_INDEX_TIME];
-        var time = serializedTime ? new Date(JSON.serializedJToETime) : new Date(0);
+        var time = serializedTime ? new Date(parseInt(serializedTime)).getTime() : new Date(0);
 
         return {
             japanese: japanese,
