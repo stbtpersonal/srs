@@ -40,18 +40,17 @@
     var homeButton = document.getElementById("review-home");
     var toTranslateElement = document.getElementById("review-to-translate");
     var translationInputElement = document.getElementById("review-translation");
-    var submitButton = document.getElementById("review-submit");
     var nextButton = document.getElementById("review-next");
 
     var isQuizSession = false;
     var sessionEntries = [];
     var visibleEntryIndex = 0;
     var wrongEntries = [];
+    var isReviewingAnswer = false;
 
     homeButton.onclick = function () { srs.setScreenMain() };
     translationInputElement.oninput = function () { transformInput() };
-    submitButton.onclick = function () { submit() };
-    nextButton.onclick = function () { refreshEntry() };
+    nextButton.onclick = function () { goForward() };
 
     function startQuizSession(quizEntries) {
         reset();
@@ -72,6 +71,7 @@
         sessionEntries = [];
         visibleEntryIndex = 0;
         wrongEntries = [];
+        isReviewingAnswer = false;
     }
 
     function startSession(entries) {
@@ -115,6 +115,7 @@
 
         translationInputElement.value = "";
         translationInputElement.style.backgroundColor = "";
+        isReviewingAnswer = false;
     }
 
     function transformInput() {
@@ -179,6 +180,23 @@
         translationInputElement.value = transformedInput;
     }
 
+    function goForward() {
+        if (!isAnswerValid()) {
+            translationInputElement.style.backgroundColor = "yellow";
+        }
+        else if (!isReviewingAnswer) {
+            submit();
+        }
+        else {
+            refreshEntry();
+        }
+    }
+
+    function isAnswerValid() {
+        var answer = translationInputElement.value;
+        return answer !== "";
+    }
+
     function submit() {
         var answer = translationInputElement.value;
 
@@ -195,6 +213,8 @@
             sessionEntries.splice(visibleEntryIndex, 1);
             tryCommitEntry(visibleEntry);
         }
+
+        isReviewingAnswer = true;
     }
 
     function markEntryWrong(entry) {
