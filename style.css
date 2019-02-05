@@ -154,20 +154,20 @@ div {
 
 .study-review-header {
     position: relative;
-    height: 30vh;
-    padding-top: 20px;
+    height: 20vh;
+    padding-top: 2.5vmin;
 }
 
 .study-header {
-    background-color: rgb(121, 217, 255);
+    background-color: #24b300;
 }
 
 .review-header {
-    background-color: rgb(255, 130, 130);
+    background-color: #eb0062;
 }
 
 .study-review-home {
-    padding: 20px;
+    padding: 2.5vmin;
     text-align: center;
     text-decoration: none;
     font-family: 'Roboto', arial, sans-serif;
@@ -185,14 +185,14 @@ div {
     text-decoration: none;
     font-family: 'Roboto', arial, sans-serif;
     font-weight: bold;
-    font-size: 10vmin;
+    font-size: 7.5vmin;
     color: white;
     width: 100%;
 }
 
 .study-review-translation-container {
     position: relative;
-    height: 20vh;
+    height: 10vh;
     background-color: white;
     margin: 1vmin;
     border-width: 0.5vmin;
@@ -209,7 +209,7 @@ div {
     text-decoration: none;
     font-family: 'Roboto', arial, sans-serif;
     font-weight: bold;
-    font-size: 10vmin;
+    font-size: 7.5vmin;
     color: rgb(75, 75, 75);
 }
 
@@ -233,11 +233,11 @@ div {
     text-decoration: none;
     font-family: 'Roboto', arial, sans-serif;
     font-weight: bold;
-    font-size: 10vmin;
+    font-size: 7.5vmin;
     color: rgb(75, 75, 75);
     float: left;
-    padding: 0 1.5vw;
-    line-height: 20vh;
+    padding: 0 3.5vmin;
+    line-height: 10vh;
     cursor: pointer;
 }
 
@@ -246,11 +246,11 @@ div {
     text-decoration: none;
     font-family: 'Roboto', arial, sans-serif;
     font-weight: bold;
-    font-size: 10vmin;
+    font-size: 7.5vmin;
     color: rgb(75, 75, 75);
     float: right;
-    padding: 0 1.5vw;
-    line-height: 20vh;
+    padding: 0 3.5vmin;
+    line-height: 10vh;
     cursor: pointer;
 }
 
