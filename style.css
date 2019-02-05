@@ -247,7 +247,7 @@ div {
     height: 100%;
     background: transparent;
     pointer-events: none;
-    z-index: 1;
+    z-index: 2;
 }
 
 .study-review-previous {
@@ -262,6 +262,7 @@ div {
     padding: 0 3.5vmin;
     line-height: 10vh;
     cursor: pointer;
+    z-index: 1;
 }
 
 .study-review-next {
@@ -275,6 +276,7 @@ div {
     padding: 0 3.5vmin;
     line-height: 10vh;
     cursor: pointer;
+    z-index: 1;
 }
 
 .study-review-details {
