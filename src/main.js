@@ -69,6 +69,13 @@
         });
     }
 
+    function arrayToString(array) {
+        if (!array || array.length === 0) {
+            return "";
+        }
+        return array.reduce(function (a, b) { return a + ", " + b });
+    }
+
     setScreenInitializing();
 
     window.srs = {
@@ -80,5 +87,7 @@
 
         findEntriesForStudy: findEntriesForStudy,
         findEntriesForReview: findEntriesForReview,
+
+        arrayToString: arrayToString,
     };
 })();

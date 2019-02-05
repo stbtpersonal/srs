@@ -45,6 +45,12 @@
     var toTranslateElement = document.getElementById("review-to-translate");
     var translationInputElement = document.getElementById("review-translation");
     var translationInputOverlayElement = document.getElementById("review-translation-overlay");
+    var detailsElement = document.getElementById("review-details");
+    var allJapaneseElement = document.getElementById("review-all-japanese");
+    var allEnglishElement = document.getElementById("review-all-english");
+    var explanationElement = document.getElementById("review-explanation");
+    var mnemonicElement = document.getElementById("review-mnemonic");
+    var examplesElement = document.getElementById("review-examples");
     var nextButton = document.getElementById("review-next");
 
     var isQuizSession = false;
@@ -116,10 +122,10 @@
 
         var srsData = visibleEntry.srsEntry.srsData;
         if (visibleEntry.type === ENTRY_TYPE_J_TO_E) {
-            toTranslateElement.innerHTML = srsData.japanese;
+            toTranslateElement.innerHTML = srsData.japanese[0];
         }
         else {
-            toTranslateElement.innerHTML = srsData.english;
+            toTranslateElement.innerHTML = srsData.english[0];
         }
 
         visibleEntryIndex = randomIndex;
@@ -128,6 +134,19 @@
         translationInputOverlayElement.style.backgroundColor = "transparent";
         translationInputElement.focus();
         isReviewingAnswer = false;
+
+        detailsElement.style.display = "none";
+        allJapaneseElement.innerHTML = srs.arrayToString(srsData.japanese);
+        allEnglishElement.innerHTML = srs.arrayToString(srsData.english);
+        explanationElement.innerHTML = srsData.explanation;
+        mnemonicElement.innerHTML = srsData.mnemonic;
+
+        examplesElement.innerHTML = "";
+        for (var example of srsData.examples) {
+            var exampleElement = document.createElement("div");
+            exampleElement.innerHTML = example;
+            examplesElement.appendChild(exampleElement);
+        }
     }
 
     function transformInput() {
@@ -226,6 +245,7 @@
             tryCommitEntry(visibleEntry);
         }
 
+        detailsElement.style.display = "block";
         isReviewingAnswer = true;
     }
 

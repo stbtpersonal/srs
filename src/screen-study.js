@@ -51,8 +51,8 @@
 
         japaneseElement.innerHTML = visibleEntry.srsData.japanese[0];
         englishElement.innerHTML = visibleEntry.srsData.english[0];
-        allJapaneseElement.innerHTML = arrayToString(visibleEntry.srsData.japanese);
-        allEnglishElement.innerHTML = arrayToString(visibleEntry.srsData.english);
+        allJapaneseElement.innerHTML = srs.arrayToString(visibleEntry.srsData.japanese);
+        allEnglishElement.innerHTML = srs.arrayToString(visibleEntry.srsData.english);
         explanationElement.innerHTML = visibleEntry.srsData.explanation;
         mnemonicElement.innerHTML = visibleEntry.srsData.mnemonic;
 
@@ -62,13 +62,6 @@
             exampleElement.innerHTML = example;
             examplesElement.appendChild(exampleElement);
         }
-    }
-
-    function arrayToString(array) {
-        if (!array || array.length === 0) {
-            return "";
-        }
-        return array.reduce(function (a, b) { return a + ", " + b });
     }
 
     function goBack() {
