@@ -214,10 +214,14 @@ div {
 }
 
 .review-translation {
+    background: transparent;
+    border: none;
+}
+
+.review-translation-overlay {
     width: 100%;
     height: 100%;
     background: transparent;
-    border: none;
     z-index: 1;
 }
 
