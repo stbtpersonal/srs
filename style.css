@@ -216,6 +216,7 @@ div {
 .review-translation {
     background: transparent;
     border: none;
+    width: 75vw;
 }
 
 .review-translation-overlay {
