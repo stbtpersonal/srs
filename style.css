@@ -257,3 +257,38 @@ div {
 .study-review-details {
     margin: 5vh 10vw;
 }
+
+.study-review-all-title {
+    text-decoration: none;
+    font-family: 'Roboto', arial, sans-serif;
+    font-weight: bold;
+    font-size: 2.5vmin;
+    color: rgb(75, 75, 75);
+    width: 12.5vmin;
+    display: inline-block;
+}
+
+.study-review-all {
+    text-align: left;
+    text-decoration: none;
+    font-family: 'Roboto', arial, sans-serif;
+    font-size: 2.5vmin;
+    color: rgb(75, 75, 75);
+}
+
+.study-review-explanation-title {
+    text-align: left;
+    text-decoration: none;
+    font-family: 'Roboto', arial, sans-serif;
+    font-weight: bold;
+    font-size: 5vmin;
+    color: rgb(75, 75, 75);
+}
+
+.study-review-explanation {
+    margin-top: 2vmin;
+    text-align: left;
+    text-decoration: none;
+    font-family: 'Roboto', arial, sans-serif;
+    font-size: 4vmin;
+}

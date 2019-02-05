@@ -6,10 +6,11 @@
 
     var COLUMN_INDEX_JAPANESE = 0;
     var COLUMN_INDEX_ENGLISH = 1;
-    var COLUMN_INDEX_MNEMONIC = 2;
-    var COLUMN_INDEX_EXAMPLES = 3;
-    var COLUMN_INDEX_LEVEL = 4;
-    var COLUMN_INDEX_TIME = 5;
+    var COLUMN_INDEX_EXPLANATION = 2;
+    var COLUMN_INDEX_MNEMONIC = 3;
+    var COLUMN_INDEX_EXAMPLES = 4;
+    var COLUMN_INDEX_LEVEL = 5;
+    var COLUMN_INDEX_TIME = 6;
 
     var END_COLUMN_INDEX = COLUMN_INDEX_TIME;
 
@@ -64,6 +65,9 @@
         var serializedEnglish = serializedData[COLUMN_INDEX_ENGLISH];
         var english = serializedEnglish.split("; ");
 
+        var serializedExplanation = serializedData[COLUMN_INDEX_EXPLANATION];
+        var explanation = serializedExplanation ? serializedExplanation : "";
+
         var serializedMnemonic = serializedData[COLUMN_INDEX_MNEMONIC];
         var mnemonic = serializedMnemonic ? serializedMnemonic : "";
 
@@ -79,6 +83,7 @@
         return {
             japanese: japanese,
             english: english,
+            explanation: explanation,
             mnemonic: mnemonic,
             examples: examples,
             level: level,
