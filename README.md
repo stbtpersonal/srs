@@ -1,7 +1,4 @@
 # SRS
-SRS is a web-based [Spaced Repetition System](https://en.wikipedia.org/wiki/Spaced_repetition) that uses Google Spreadsheets as a backend.
+SRS is a web-based Japanese-English [Spaced Repetition System](https://en.wikipedia.org/wiki/Spaced_repetition) loosely based on [WaniKani](https://www.wanikani.com/).
 
-# Run It
-Click **[HERE](https://stbtpersonal.github.io/srs/)**.
-
-Please make sure that Javascript is enabled in your browser.
+This is a personal-use project.
