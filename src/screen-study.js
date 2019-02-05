@@ -3,6 +3,8 @@
 
     var ENTRIES_PER_SESSION = 5;
 
+    var spinnerElement = document.getElementById("study-spinner");
+    var contentsElement = document.getElementById("study-contents");
     var homeButton = document.getElementById("study-home");
     var japaneseElement = document.getElementById("study-japanese");
     var englishElement = document.getElementById("study-english");
@@ -33,6 +35,7 @@
     });
 
     function startNewSession() {
+        showSpinner();
         sessionEntries = [];
         visibleEntryIndex = 0;
         srs.database.refreshEntries().then(function (entries) {
@@ -40,7 +43,18 @@
             sessionEntries = studyEntries.slice(0, ENTRIES_PER_SESSION);
 
             refreshEntry();
+            showContents();
         });
+    }
+
+    function showSpinner() {
+        spinnerElement.style.display = "block";
+        contentsElement.style.display = "none";
+    }
+
+    function showContents() {
+        spinnerElement.style.display = "none";
+        contentsElement.style.display = "block";
     }
 
     function refreshEntry() {

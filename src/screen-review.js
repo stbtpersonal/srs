@@ -41,6 +41,8 @@
     var OVERLAY_YELLOW = "rgba(255, 255, 0, 0.5)"
     var OVERLAY_RED = "rgba(255, 0, 0, 0.5)"
 
+    var spinnerElement = document.getElementById("review-spinner");
+    var contentsElement = document.getElementById("review-contents");
     var homeButton = document.getElementById("review-home");
     var toTranslateElement = document.getElementById("review-to-translate");
     var translationInputElement = document.getElementById("review-translation");
@@ -75,14 +77,27 @@
         reset();
         isQuizSession = true;
         startSession(quizEntries);
+        showContents();
     }
 
     function startReviewSession() {
+        showSpinner();
         reset();
         srs.database.refreshEntries().then(function (entries) {
             var reviewEntries = srs.findEntriesForReview(entries);
             startSession(reviewEntries);
+            showContents();
         });
+    }
+
+    function showSpinner() {
+        spinnerElement.style.display = "block";
+        contentsElement.style.display = "none";
+    }
+
+    function showContents() {
+        spinnerElement.style.display = "none";
+        contentsElement.style.display = "block";
     }
 
     function reset() {
