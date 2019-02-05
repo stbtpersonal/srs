@@ -230,12 +230,14 @@
 
     function submit() {
         var answer = translationInputElement.value;
+        var normalizedAnswer = normalize(answer);
 
         var visibleEntry = sessionEntries[visibleEntryIndex];
         var srsData = visibleEntry.srsEntry.srsData;
         var expectedAnswers = visibleEntry.type === ENTRY_TYPE_J_TO_E ? srsData.english : srsData.japanese;
+        var normalizedExpectedAnswers = expectedAnswers.map(normalize);
 
-        if (!expectedAnswers.includes(answer)) {
+        if (!normalizedExpectedAnswers.includes(normalizedAnswer)) {
             translationInputOverlayElement.style.backgroundColor = OVERLAY_RED;
             markEntryWrong(visibleEntry);
         }
@@ -247,6 +249,10 @@
 
         detailsElement.style.display = "block";
         isReviewingAnswer = true;
+    }
+
+    function normalize(text) {
+        return text.toLowerCase().replace(/[^\sa-z\u3041-\u3096]/g, "");
     }
 
     function markEntryWrong(entry) {
