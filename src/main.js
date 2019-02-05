@@ -39,13 +39,21 @@
 
     function setScreenReview(quizEntries) {
         setScreen(reviewScreenElement);
-        
+
         if (quizEntries) {
             srs.screenReview.startQuizSession(quizEntries);
         }
         else {
             srs.screenReview.startReviewSession();
         }
+    }
+
+    function isScreenStudyShown() {
+        return studyScreenElement.style.display !== "none";
+    }
+
+    function isScreenReviewShown() {
+        return reviewScreenElement.style.display !== "none";
     }
 
     function findEntriesForStudy(entries) {
@@ -84,6 +92,9 @@
         setScreenMain: setScreenMain,
         setScreenStudy: setScreenStudy,
         setScreenReview: setScreenReview,
+
+        isScreenStudyShown: isScreenStudyShown,
+        isScreenReviewShown: isScreenReviewShown,
 
         findEntriesForStudy: findEntriesForStudy,
         findEntriesForReview: findEntriesForReview,

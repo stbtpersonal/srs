@@ -64,8 +64,10 @@
     nextButton.onclick = function () { goForward() };
 
     document.addEventListener("keyup", function (event) {
-        if (event.key === "Enter" || event.key === "NumpadEnter") {
-            goForward();
+        if (srs.isScreenReviewShown()) {
+            if (event.key === "Enter" || event.key === "NumpadEnter") {
+                goForward();
+            }
         }
     });
 

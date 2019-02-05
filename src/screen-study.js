@@ -22,11 +22,13 @@
     nextButton.onclick = function () { goForward() };
 
     document.addEventListener("keyup", function (event) {
-        if (event.key === "ArrowLeft") {
-            goBack();
-        }
-        else if (event.key === "ArrowRight") {
-            goForward();
+        if (srs.isScreenStudyShown()) {
+            if (event.key === "ArrowLeft") {
+                goBack();
+            }
+            else if (event.key === "ArrowRight") {
+                goForward();
+            }
         }
     });
 
