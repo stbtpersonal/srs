@@ -23,7 +23,7 @@
     </button>
   </div>
 
-  <div id="main-screen" class="sign-in-container" style="display: none;">
+  <div id="main-screen" class="main-container" style="display: none;">
     <div class="main-top-bar">
       <button id="study" class="main-button main-button-left">
         <div class="main-button-circle">
@@ -44,9 +44,12 @@
         <div class="main-button-caption">Sign Out</div>
       </button>
     </div>
+    <div class="main-body">
+
+    </div>
   </div>
 
-  <div id="study-screen" style="display: none;">
+  <div id="study-screen" class="study-review-container" style="display: none;">
     <div id="study-spinner" class="study-review-spinner-container">
       <span class="study-review-spinner"></span>
     </div>
@@ -82,7 +85,7 @@
     </div>
   </div>
 
-  <div id="review-screen" style="display: none;">
+  <div id="review-screen" class="study-review-container" style="display: none;">
     <div id="review-spinner" class="study-review-spinner-container">
       <span class="study-review-spinner"></span>
     </div>
@@ -116,6 +119,14 @@
           <div id="review-examples"></div>
         </div>
       </div>
+    </div>
+  </div>
+
+  <div id="error-overlay" class="error-container" style="display: none;">
+    <div class="error-details-container">
+      <div class="error-title">An error has occurred!</div>
+      <div class="error-subtitle">Details:</div>
+      <div id="error-details" class="error-details"></div>
     </div>
   </div>
 

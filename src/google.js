@@ -26,7 +26,7 @@
             gapi.auth2.getAuthInstance().isSignedIn.listen(notifySigninStatusChanged);
             notifySigninStatusChanged(gapi.auth2.getAuthInstance().isSignedIn.get());
         }, function (error) {
-            console.log(error);
+            srs.panic(error);
         });
     }
 
@@ -48,7 +48,7 @@
     }
 
     function fetchSpreadsheets() {
-        return new Promise(function (resolve, reject) {
+        return new Promise(function (resolve) {
             gapi.client.drive.files.list({
                 "fields": "files(id, name)",
                 "q": "mimeType = 'application/vnd.google-apps.spreadsheet' and name contains '[" + SHEET_NAME + "]'"
@@ -56,6 +56,7 @@
                 resolve(response.result.files);
             }, function (response) {
                 reject(response.result.error.message);
+                srs.panic(response.result.error.message);
             });
         });
     }
@@ -69,6 +70,7 @@
                 resolve(response.result.values);
             }, function (response) {
                 reject(response.result.error.message);
+                srs.panic(response.result.error.message);
             });
         });
     }
@@ -84,6 +86,7 @@
                 resolve(response.result.files);
             }, function (response) {
                 reject(response.result.error.message);
+                srs.panic(response.result.error.message);
             });
         });
     }

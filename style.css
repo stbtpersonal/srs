@@ -10,7 +10,7 @@ div {
 .noscript-container {
     width: 100vw;
     height: 100vh;
-    position: relative;
+    position: absolute;
 }
 
 .noscript-text {
@@ -30,7 +30,7 @@ div {
 .initializing-container {
     width: 100vw;
     height: 100vh;
-    position: relative;
+    position: absolute;
 }
 
 .initializing-text {
@@ -50,7 +50,7 @@ div {
 .sign-in-container {
     width: 100vw;
     height: 100vh;
-    position: relative;
+    position: absolute;
 }
 
 .google-button {
@@ -86,8 +86,18 @@ div {
     font-family: 'Roboto', arial, sans-serif;
 }
 
+.main-container {
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%);
+    width: 100%;
+    max-width: 1000px;
+    margin: auto;
+}
+
 .main-top-bar {
     padding: 30px 30px 0 30px;
+    height: 135px;
 }
 
 .main-button {
@@ -152,6 +162,11 @@ div {
     color: rgb(175, 175, 175);
 }
 
+.main-body {
+    background-color: rgb(225, 225, 225);
+    min-height: 100px;
+}
+
 .study-review-spinner-container {
     position: absolute;
     top: 50%;
@@ -187,6 +202,12 @@ div {
 
 .review-header {
     background-color: #eb0062;
+}
+
+.study-review-container {
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
 }
 
 .study-review-home {
@@ -316,4 +337,40 @@ div {
     text-decoration: none;
     font-family: 'Roboto', arial, sans-serif;
     font-size: 4vmin;
+}
+
+.error-container {
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    background-color: rgba(0, 0, 0, 0.75);
+    cursor: pointer;
+}
+
+.error-details-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    margin: auto;
+    color: rgb(225, 0, 0);
+    text-decoration: none;
+    font-family: 'Roboto', arial, sans-serif;
+    text-align: left;
+}
+
+.error-title {
+    font-weight: bold;
+    font-size: 7.5vmin;
+}
+
+.error-subtitle {
+    font-weight: bold;
+    font-size: 2.5vmin;
+    margin-top: 2vmin;
+}
+
+.error-details {
+    font-size: 5vmin;
+    margin-top: 1vmin;
 }

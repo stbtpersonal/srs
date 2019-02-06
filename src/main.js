@@ -6,6 +6,12 @@
     var mainScreenElement = document.getElementById("main-screen");
     var studyScreenElement = document.getElementById("study-screen");
     var reviewScreenElement = document.getElementById("review-screen");
+    var errorOverlayElement = document.getElementById("error-overlay");
+    var errorDetailsElement = document.getElementById("error-details");
+
+    window.onerror = function (event, source, lineNumber, columnNumber, error) { panic(error); }
+    window.onunhandledrejection = function (event) { panic(event); }
+    errorOverlayElement.onclick = function () { location.reload(true) };
 
     function setScreen(screenElement) {
         initializingScreenElement.style.display = "none";
@@ -62,6 +68,12 @@
         });
     }
 
+    function panic(details) {
+        console.error(details);
+        errorDetailsElement.innerHTML = typeof (details) === "string" ? details : JSON.stringify(details);
+        errorOverlayElement.style.display = "block";
+    }
+
     function findEntriesForReview(entries) {
         var now = Date.now();
         return entries.filter(function (entry) {
@@ -95,6 +107,8 @@
 
         isScreenStudyShown: isScreenStudyShown,
         isScreenReviewShown: isScreenReviewShown,
+
+        panic: panic,
 
         findEntriesForStudy: findEntriesForStudy,
         findEntriesForReview: findEntriesForReview,
