@@ -83,8 +83,8 @@
     function startReviewSession() {
         showSpinner();
         reset();
-        srs.database.refreshEntries().then(function (entries) {
-            var reviewEntries = srs.findEntriesForReview(entries);
+        srs.database.refreshEntries().then(function (result) {
+            var reviewEntries = srs.findEntriesForReview(result.entries);
             startSession(reviewEntries);
             showContents();
         });

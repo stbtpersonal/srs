@@ -38,8 +38,8 @@
         showSpinner();
         sessionEntries = [];
         visibleEntryIndex = 0;
-        srs.database.refreshEntries().then(function (entries) {
-            var studyEntries = srs.findEntriesForStudy(entries);
+        srs.database.refreshEntries().then(function (result) {
+            var studyEntries = srs.findEntriesForStudy(result.entries);
             sessionEntries = studyEntries.slice(0, ENTRIES_PER_SESSION);
 
             refreshEntry();

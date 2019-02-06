@@ -14,16 +14,14 @@
 
     var END_COLUMN_INDEX = COLUMN_INDEX_TIME;
 
-    var entriesCache = [];
-
     function refreshEntries() {
         return new Promise(function (resolve, reject) {
             var entries = [];
+            var spreadsheets = [];
 
             function fetchNextRows(remainingSpreadsheets) {
-                if (remainingSpreadsheets.length == 0) {
-                    entriesCache = entries;
-                    resolve(entriesCache);
+                if (remainingSpreadsheets.length === 0) {
+                    resolve({ "entries": entries, "spreadsheets": spreadsheets });
                     return;
                 }
 
@@ -46,7 +44,10 @@
                 });
             }
 
-            srs.google.fetchSpreadsheets().then(fetchNextRows);
+            srs.google.fetchSpreadsheets().then(function (fetchedSpreadsheets) {
+                spreadsheets = fetchedSpreadsheets.slice(0);
+                fetchNextRows(fetchedSpreadsheets);
+            });
         });
     }
 
@@ -91,10 +92,6 @@
         };
     }
 
-    function getEntries() {
-        return entriesCache.slice();
-    }
-
     function updateEntry(entry) {
         var range = getColumnName(COLUMN_INDEX_LEVEL) + entry.spreadsheetRow + ":" + getColumnName(COLUMN_INDEX_TIME) + entry.spreadsheetRow;
         srs.google.updateCells(entry.spreadsheetId, range, [[entry.srsData.level, entry.srsData.time]]);
@@ -102,7 +99,6 @@
 
     srs.database = {
         refreshEntries: refreshEntries,
-        getEntries: getEntries,
         updateEntry: updateEntry,
     };
 })();

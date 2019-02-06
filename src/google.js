@@ -50,7 +50,7 @@
     function fetchSpreadsheets() {
         return new Promise(function (resolve) {
             gapi.client.drive.files.list({
-                "fields": "files(id, name)",
+                "fields": "files(id, name, webViewLink)",
                 "q": "mimeType = 'application/vnd.google-apps.spreadsheet' and name contains '[" + SHEET_NAME + "]'"
             }).then(function (response) {
                 resolve(response.result.files);
