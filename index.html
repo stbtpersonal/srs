@@ -45,9 +45,28 @@
       </button>
     </div>
     <div class="main-body">
-      <div>
-        <span class="main-databases-header">Databases</span>
-        <span class="main-databases-new-button"></span>
+      <div class="main-database-header">
+        <span class="main-database-header-text">Databases</span>
+        <span class="main-database-new-button"></span>
+      </div>
+      <div class="main-database-entries">
+        <div id="main-database-no-entries" class="main-no-entries">No databases loaded</div>
+        <div id="main-database-entry-template" class="main-database-entry" style="display: none;">
+          <span class="main-database-entry-name">[SRS] So and so database</span>
+          <span class="main-database-entry-edit"></span>
+        </div>
+      </div>
+      <div class="main-body-divider"></div>
+      <div class="main-schedule-header">Schedule</div>
+      <div class="main-schedule-entries">
+        <div id="main-schedule-no-entries" class="main-no-entries">Nothing scheduled</div>
+        <div id="main-schedule-date-entry-template" class="main-schedule-date-entry" style="display: none;">
+          <span id="main-schedule-date-entry-text" class="main-schedule-date-entry-text">Tuesday, 15/12/2030</span>
+        </div>
+        <div id="main-schedule-entry-template" class="main-schedule-entry" style="display: none;">
+          <span class="main-schedule-entry-time">13:00</span>
+          <span class="main-schedule-entry-amount">50</span>
+        </div>
       </div>
     </div>
   </div>
