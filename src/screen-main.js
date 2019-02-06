@@ -1,6 +1,8 @@
 (function () {
     "use strict";
 
+    var DATE_FORMAT = { weekday: "long", year: "numeric", month: "long", day: "numeric" };
+
     var studyAmountElement = document.getElementById("study-amount");
     var reviewAmountElement = document.getElementById("review-amount");
     var studyButton = document.getElementById("study");
@@ -10,6 +12,10 @@
     var databaseEntriesElement = document.getElementById("main-database-entries");
     var databaseNoEntriesElement = document.getElementById("main-database-no-entries");
     var databaseEntryTemplateElement = document.getElementById("main-database-entry-template");
+    var scheduleEntriesElement = document.getElementById("main-schedule-entries");
+    var scheduleNoEntriesElement = document.getElementById("main-schedule-no-entries");
+    var scheduleDateEntryTemplateElement = document.getElementById("main-schedule-date-entry-template");
+    var scheduleEntryTemplateElement = document.getElementById("main-schedule-entry-template");
 
     databaseNewButton.onclick = function () { createDatabase() };
     studyButton.onclick = function () { srs.setScreenStudy() };
@@ -22,10 +28,13 @@
         reviewAmountElement.innerHTML = "?";
         databaseEntriesElement.innerHTML = "";
         databaseNoEntriesElement.style.display = "block";
+        scheduleEntriesElement.innerHTML = "";
+        scheduleNoEntriesElement.style.display = "block";
         srs.database.refreshEntries().then(function (result) {
             refreshStudyAmount(result.entries);
             refreshReviewAmount(result.entries);
             refreshDatabases(result.spreadsheets, result.entries);
+            refreshSchedule(result.entries);
         });
     }
 
@@ -63,6 +72,62 @@
 
             databaseEntriesElement.appendChild(databaseEntryElement);
         }
+    }
+
+    function refreshSchedule(entries) {
+        if (!entries || entries.length === 0) {
+            return;
+        }
+
+        entries.sort(function (a, b) { return a.srsData.time - b.srsData.time });
+
+        var dates = {};
+        for (var entry of entries) {
+            var timestamp = entry.srsData.time;
+            if (timestamp === 0) {
+                continue;
+            }
+
+            var date = new Date(timestamp);
+            date.setHours(0, 0, 0, 0);
+            var dateTimestamp = date.getTime();
+            if (!dates[dateTimestamp]) {
+                dates[dateTimestamp] = {};
+            }
+
+            var hour = new Date(timestamp).getHours();
+            if (!dates[dateTimestamp][hour]) {
+                dates[dateTimestamp][hour] = 0;
+            }
+            dates[dateTimestamp][hour]++;
+        }
+
+        for (var date in dates) {
+            var dateEntryElement = scheduleDateEntryTemplateElement.cloneNode(true);
+            dateEntryElement.style.display = "block";
+            dateEntryElement.removeAttribute("id");
+
+            var nameElement = dateEntryElement.querySelector("#main-schedule-date-entry-text");
+            nameElement.innerHTML = new Date(parseInt(date)).toLocaleDateString("en-US", DATE_FORMAT);
+
+            scheduleEntriesElement.appendChild(dateEntryElement);
+
+            for (var hour in dates[date]) {
+                var scheduleEntryElement = scheduleEntryTemplateElement.cloneNode(true);
+                scheduleEntryElement.style.display = "block";
+                scheduleEntryElement.removeAttribute("id");
+
+                var timeElement = scheduleEntryElement.querySelector("#main-schedule-entry-time");
+                timeElement.innerHTML = hour + ":00";
+
+                var amountElement = scheduleEntryElement.querySelector("#main-schedule-entry-amount");
+                amountElement.innerHTML = dates[date][hour];
+
+                scheduleEntriesElement.appendChild(scheduleEntryElement);
+            }
+        }
+
+        scheduleNoEntriesElement.style.display = "none";
     }
 
     function createDatabase() {
