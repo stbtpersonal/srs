@@ -47,27 +47,25 @@
     <div class="main-body">
       <div class="main-database-header">
         <span class="main-database-header-text">Databases</span>
-        <span class="main-database-new-button"></span>
+        <span id="main-database-new-button" class="main-database-new-button"></span>
       </div>
       <div id="main-database-no-entries" class="main-no-entries">No databases loaded</div>
-      <div id="main-database-entries" class="main-database-entries">
-        <a id="main-database-entry-template" class="main-database-entry" target="_blank" style="display: none;">
-          <span id="main-database-entry-name" class="main-database-entry-name"></span>
-          <span id="main-database-entry-amount" class="main-database-entry-amount"></span>
-        </a>
-      </div>
+      <a id="main-database-entry-template" class="main-database-entry" target="_blank" style="display: none;">
+        <span id="main-database-entry-name" class="main-database-entry-name"></span>
+        <span id="main-database-entry-amount" class="main-database-entry-amount"></span>
+      </a>
+      <div id="main-database-entries" class="main-database-entries"></div>
       <div class="main-body-divider"></div>
       <div class="main-schedule-header">Schedule</div>
       <div id="main-schedule-no-entries" class="main-no-entries">Nothing scheduled</div>
-      <div class="main-schedule-entries">
-        <div id="main-schedule-date-entry-template" class="main-schedule-date-entry" style="display: none;">
-          <span id="main-schedule-date-entry-text" class="main-schedule-date-entry-text">Tuesday, 15/12/2030</span>
-        </div>
-        <div id="main-schedule-entry-template" class="main-schedule-entry" style="display: none;">
-          <span class="main-schedule-entry-time">13:00</span>
-          <span class="main-schedule-entry-amount">50</span>
-        </div>
+      <div id="main-schedule-date-entry-template" class="main-schedule-date-entry" style="display: none;">
+        <span id="main-schedule-date-entry-text" class="main-schedule-date-entry-text">Tuesday, 15/12/2030</span>
       </div>
+      <div id="main-schedule-entry-template" class="main-schedule-entry" style="display: none;">
+        <span class="main-schedule-entry-time">13:00</span>
+        <span class="main-schedule-entry-amount">50</span>
+      </div>
+      <div class="main-schedule-entries"></div>
     </div>
   </div>
 

@@ -67,7 +67,7 @@
                 spreadsheetId: spreadsheetId,
                 range: SHEET_NAME + "!" + range,
             }).then(function (response) {
-                resolve(response.result.values);
+                resolve(response.result.values || []);
             }, function (response) {
                 reject(response.result.error.message);
                 srs.panic(response.result.error.message);
@@ -91,10 +91,62 @@
         });
     }
 
+    function createSpreadsheet() {
+        var title = "[" + SHEET_NAME + "] " + new Date().toUTCString();
+        return new Promise(function (resolve, reject) {
+            gapi.client.sheets.spreadsheets.create({
+                properties: { title: title },
+            }).then(function (response) {
+                var spreadsheetId = response.result.spreadsheetId;
+                var sheetId = response.result.sheets[0].properties.sheetId;
+                gapi.client.sheets.spreadsheets.batchUpdate({
+                    spreadsheetId: spreadsheetId,
+                    requests: [
+                        {
+                            updateSheetProperties: {
+                                properties: {
+                                    sheetId: sheetId,
+                                    title: SHEET_NAME
+                                },
+                                fields: "title"
+                            }
+                        },
+                        {
+                            repeatCell: {
+                                range: {
+                                    sheetId: sheetId,
+                                    startRowIndex: 0,
+                                    endRowIndex: 1,
+                                },
+                                cell: {
+                                    userEnteredFormat: {
+                                        textFormat: {
+                                            bold: true,
+                                        }
+                                    }
+                                },
+                                fields: "userEnteredFormat.textFormat.bold"
+                            }
+                        }
+                    ],
+                }).then(function () {
+                    resolve(spreadsheetId);
+                }, function (response) {
+                    reject(response.result.error.message);
+                    srs.panic(response.result.error.message);
+                });
+            }, function (response) {
+                reject(response.result.error.message);
+                srs.panic(response.result.error.message);
+            });
+        });
+    }
+
     srs.google = {
         handleClientLoad: handleClientLoad,
         fetchSpreadsheets: fetchSpreadsheets,
         fetchRows: fetchRows,
         updateCells: updateCells,
+        createSpreadsheet: createSpreadsheet,
     };
 })();

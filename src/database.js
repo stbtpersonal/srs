@@ -14,6 +14,11 @@
 
     var END_COLUMN_INDEX = COLUMN_INDEX_TIME;
 
+    var TEMPLATE_DATA = [
+        ["Japanese", "English", "Explanation", "Mnemonic", "Examples", "Level", "Time"],
+        ["これ", "this one; this", "Detailed explanation", "A mnemonic to help remember the word", "Example 1; Example 2", "", ""],
+    ];
+
     function refreshEntries() {
         return new Promise(function (resolve, reject) {
             var entries = [];
@@ -97,8 +102,20 @@
         srs.google.updateCells(entry.spreadsheetId, range, [[entry.srsData.level, entry.srsData.time]]);
     }
 
+    function createSpreadsheet() {
+        var range = getColumnName(0) + "1:" + getColumnName(END_COLUMN_INDEX) + "2";
+        return new Promise(function (resolve, reject) {
+            srs.google.createSpreadsheet().then(function (spreadsheetId) {
+                srs.google.updateCells(spreadsheetId, range, TEMPLATE_DATA).then(function () {
+                    resolve();
+                });
+            });
+        });
+    }
+
     srs.database = {
         refreshEntries: refreshEntries,
         updateEntry: updateEntry,
+        createSpreadsheet: createSpreadsheet,
     };
 })();

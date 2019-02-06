@@ -5,10 +5,12 @@
     var reviewAmountElement = document.getElementById("review-amount");
     var studyButton = document.getElementById("study");
     var reviewButton = document.getElementById("review");
+    var databaseNewButton = document.getElementById("main-database-new-button");
     var databaseEntriesElement = document.getElementById("main-database-entries");
     var databaseNoEntriesElement = document.getElementById("main-database-no-entries");
     var databaseEntryTemplateElement = document.getElementById("main-database-entry-template");
 
+    databaseNewButton.onclick = function () { createDatabase() };
     studyButton.onclick = function () { srs.setScreenStudy() };
     reviewButton.onclick = function () { srs.setScreenReview() };
 
@@ -58,6 +60,10 @@
 
             databaseEntriesElement.appendChild(databaseEntryElement);
         }
+    }
+
+    function createDatabase() {
+        srs.database.createSpreadsheet().then(refresh);
     }
 
     srs.screenMain = {
