@@ -6,6 +6,7 @@
     var studyButton = document.getElementById("study");
     var reviewButton = document.getElementById("review");
     var databaseNewButton = document.getElementById("main-database-new-button");
+    var databaseNewSpinner = document.getElementById("main-database-new-spinner");
     var databaseEntriesElement = document.getElementById("main-database-entries");
     var databaseNoEntriesElement = document.getElementById("main-database-no-entries");
     var databaseEntryTemplateElement = document.getElementById("main-database-entry-template");
@@ -13,6 +14,8 @@
     databaseNewButton.onclick = function () { createDatabase() };
     studyButton.onclick = function () { srs.setScreenStudy() };
     reviewButton.onclick = function () { srs.setScreenReview() };
+
+    var isCreatingDatabase = false;
 
     function refresh() {
         studyAmountElement.innerHTML = "?";
@@ -63,7 +66,17 @@
     }
 
     function createDatabase() {
-        srs.database.createSpreadsheet().then(refresh);
+        if (isCreatingDatabase) {
+            return;
+        }
+
+        isCreatingDatabase = true;
+        databaseNewSpinner.style.display = "block";
+        srs.database.createSpreadsheet().then(function () {
+            isCreatingDatabase = false;
+            databaseNewSpinner.style.display = "none";
+            refresh();
+        });
     }
 
     srs.screenMain = {
