@@ -62,16 +62,16 @@
         return reviewScreenElement.style.display !== "none";
     }
 
-    function findEntriesForStudy(entries) {
-        return entries.filter(function (entry) {
-            return entry.srsData.level == 0;
-        });
-    }
-
     function panic(details) {
         console.error(details);
         errorDetailsElement.innerHTML = typeof (details) === "string" ? details : JSON.stringify(details);
         errorOverlayElement.style.display = "block";
+    }
+
+    function findEntriesForStudy(entries) {
+        return entries.filter(function (entry) {
+            return entry.srsData.level == 0;
+        });
     }
 
     function findEntriesForReview(entries) {
@@ -82,11 +82,13 @@
                 return false;
             }
 
-            var levelDurationInHours = Math.pow(2, srsLevel);
-            var levelDurationInMillis = levelDurationInHours * 60 * 60 * 1000;
-
-            return entry.srsData.time + levelDurationInMillis < now;
+            return entry.srsData.time + getLevelDuration(srsLevel) < now;
         });
+    }
+
+    function getLevelDuration(level) {
+        var levelDurationInHours = Math.pow(2, level);
+        return levelDurationInHours * 60 * 60 * 1000;
     }
 
     function arrayToString(array) {
@@ -112,6 +114,7 @@
 
         findEntriesForStudy: findEntriesForStudy,
         findEntriesForReview: findEntriesForReview,
+        getLevelDuration: getLevelDuration,
 
         arrayToString: arrayToString,
     };

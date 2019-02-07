@@ -289,7 +289,10 @@
                 var level = entry.srsEntry.srsData.level;
                 entry.srsEntry.srsData.level = level <= 1 ? 1 : level - 1;
             }
-            entry.srsEntry.srsData.time = new Date().getTime();
+            
+            var newSrsTime = new Date();
+            newSrsTime.setHours(newSrsTime.getHours(), 0, 0, 0);
+            entry.srsEntry.srsData.time = newSrsTime.getTime();
 
             srs.database.updateEntry(entry.srsEntry);
         }

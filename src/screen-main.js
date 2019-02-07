@@ -53,25 +53,30 @@
 
         databaseNoEntriesElement.style.display = "none";
         for (var spreadsheet of spreadsheets) {
-            var databaseEntryElement = databaseEntryTemplateElement.cloneNode(true);
-            databaseEntryElement.style.display = "block";
-            databaseEntryElement.removeAttribute("id");
-            databaseEntryElement.href = spreadsheet.webViewLink;
-
-            var nameElement = databaseEntryElement.querySelector("#main-database-entry-name");
-            nameElement.innerHTML = spreadsheet.name;
-
             var amount = 0;
             for (var entry of entries) {
                 if (entry.spreadsheetId === spreadsheet.id) {
                     amount++;
                 }
             }
-            var amountElement = databaseEntryElement.querySelector("#main-database-entry-amount");
-            amountElement.innerHTML = amount;
 
-            databaseEntriesElement.appendChild(databaseEntryElement);
+            appendDatabaseEntry(spreadsheet.name, amount, spreadsheet.webViewLink);
         }
+    }
+
+    function appendDatabaseEntry(name, amount, url) {
+        var databaseEntryElement = databaseEntryTemplateElement.cloneNode(true);
+        databaseEntryElement.style.display = "block";
+        databaseEntryElement.removeAttribute("id");
+        databaseEntryElement.href = url;
+
+        var nameElement = databaseEntryElement.querySelector("#main-database-entry-name");
+        nameElement.innerHTML = name;
+
+        var amountElement = databaseEntryElement.querySelector("#main-database-entry-amount");
+        amountElement.innerHTML = amount;
+
+        databaseEntriesElement.appendChild(databaseEntryElement);
     }
 
     function refreshSchedule(entries) {
@@ -81,53 +86,78 @@
 
         entries.sort(function (a, b) { return a.srsData.time - b.srsData.time });
 
+        var nowEntries = 0;
         var dates = {};
+        var nowTimestamp = new Date().getTime();
         for (var entry of entries) {
             var timestamp = entry.srsData.time;
             if (timestamp === 0) {
                 continue;
             }
 
-            var date = new Date(timestamp);
+            var levelDuration = srs.getLevelDuration(entry.srsData.level);
+            var reviewTimestamp = timestamp + levelDuration;
+
+            if (reviewTimestamp < nowTimestamp) {
+                nowEntries++;
+                continue;
+            }
+
+            var date = new Date(reviewTimestamp);
             date.setHours(0, 0, 0, 0);
             var dateTimestamp = date.getTime();
             if (!dates[dateTimestamp]) {
                 dates[dateTimestamp] = {};
             }
 
-            var hour = new Date(timestamp).getHours();
+            var hour = new Date(reviewTimestamp).getHours();
             if (!dates[dateTimestamp][hour]) {
                 dates[dateTimestamp][hour] = 0;
             }
             dates[dateTimestamp][hour]++;
         }
 
+        if (nowEntries > 0) {
+            appendScheduleEntry("Now", nowEntries);
+        }
+
         for (var date in dates) {
-            var dateEntryElement = scheduleDateEntryTemplateElement.cloneNode(true);
-            dateEntryElement.style.display = "block";
-            dateEntryElement.removeAttribute("id");
-
-            var nameElement = dateEntryElement.querySelector("#main-schedule-date-entry-text");
-            nameElement.innerHTML = new Date(parseInt(date)).toLocaleDateString("en-US", DATE_FORMAT);
-
-            scheduleEntriesElement.appendChild(dateEntryElement);
-
+            if (date > nowTimestamp) {
+                appendScheduleDateEntry(date);
+            }
             for (var hour in dates[date]) {
-                var scheduleEntryElement = scheduleEntryTemplateElement.cloneNode(true);
-                scheduleEntryElement.style.display = "block";
-                scheduleEntryElement.removeAttribute("id");
-
-                var timeElement = scheduleEntryElement.querySelector("#main-schedule-entry-time");
-                timeElement.innerHTML = hour + ":00";
-
-                var amountElement = scheduleEntryElement.querySelector("#main-schedule-entry-amount");
-                amountElement.innerHTML = dates[date][hour];
-
-                scheduleEntriesElement.appendChild(scheduleEntryElement);
+                appendScheduleEntry(hour + ":00", dates[date][hour]);
             }
         }
 
-        scheduleNoEntriesElement.style.display = "none";
+        if (scheduleEntriesElement.childElementCount > 0) {
+            scheduleNoEntriesElement.style.display = "none";
+        }
+    }
+
+    function appendScheduleDateEntry(date) {
+        var scheduleDateEntryElement = scheduleDateEntryTemplateElement.cloneNode(true);
+        scheduleDateEntryElement.style.display = "block";
+        scheduleDateEntryElement.removeAttribute("id");
+
+        var nameElement = scheduleDateEntryElement.querySelector("#main-schedule-date-entry-text");
+        nameElement.innerHTML = new Date(parseInt(date)).toLocaleDateString("en-US", DATE_FORMAT);
+
+        scheduleEntriesElement.appendChild(scheduleDateEntryElement);
+    }
+
+    function appendScheduleEntry(time, amount) {
+        var scheduleEntryElement = scheduleEntryTemplateElement.cloneNode(true);
+        scheduleEntryElement.style.display = "block";
+        scheduleEntryElement.removeAttribute("id");
+
+        var timeElement = scheduleEntryElement.querySelector("#main-schedule-entry-time");
+        timeElement.innerHTML = time;
+
+        var amountElement = scheduleEntryElement.querySelector("#main-schedule-entry-amount");
+        amountElement.innerHTML = amount;
+
+        scheduleEntriesElement.appendChild(scheduleEntryElement);
     }
 
     function createDatabase() {

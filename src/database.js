@@ -84,7 +84,7 @@
         var level = serializedLevel ? parseInt(serializedLevel) : 0;
 
         var serializedTime = serializedData[COLUMN_INDEX_TIME];
-        var time = serializedTime ? new Date(parseInt(serializedTime)).getTime() : new Date(0);
+        var time = serializedTime ? new Date(parseInt(serializedTime)).getTime() : new Date(0).getTime();
 
         return {
             japanese: japanese,
