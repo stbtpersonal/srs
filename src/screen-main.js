@@ -84,7 +84,11 @@
             return;
         }
 
-        entries.sort(function (a, b) { return a.srsData.time - b.srsData.time });
+        entries.sort(function (a, b) {
+            var aReviewTime = a.srsData.time + srs.getLevelDuration(a.srsData.level);
+            var bReviewTime = b.srsData.time + srs.getLevelDuration(b.srsData.level);
+            return aReviewTime - bReviewTime;
+        });
 
         var nowEntries = 0;
         var dates = {};
