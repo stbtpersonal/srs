@@ -165,7 +165,9 @@ div {
 .main-body {
     background-color: rgb(225, 225, 225);
     height: 100vh;
+    width: 100%;
     padding: 15px;
+    display: table;
 }
 
 .main-database-header {
@@ -220,10 +222,14 @@ div {
     width: 100%;
     height: 40px;
     float: left;
-    border-style: solid;
-    border-width: thin;
-    border-color: rgb(175, 175, 175);
+    border-bottom-style: solid;
+    border-bottom-width: thin;
+    border-bottom-color: rgb(175, 175, 175);
     cursor: pointer;
+}
+
+.main-database-entry:last-child {
+    border-bottom-style: none;
 }
 
 .main-database-entry-name {
@@ -273,13 +279,10 @@ div {
 }
 
 .main-schedule-date-entry {
-    background-color: rgb(150, 150, 150);
+    background-color: rgb(200, 200, 200);
     width: 100%;
     height: 25px;
     float: left;
-    border-style: solid;
-    border-width: thin;
-    border-color: rgb(175, 175, 175);
 }
 
 .main-schedule-date-entry-text {
@@ -298,9 +301,13 @@ div {
     width: 100%;
     height: 40px;
     float: left;
-    border-style: solid;
-    border-width: thin;
-    border-color: rgb(175, 175, 175);
+    border-bottom-style: solid;
+    border-bottom-width: thin;
+    border-bottom-color: rgb(175, 175, 175);
+}
+
+.main-schedule-entry:last-child {
+    border-bottom-style: none;
 }
 
 .main-schedule-entry-time {
