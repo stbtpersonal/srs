@@ -1,6 +1,8 @@
 (function () {
     "use strict";
 
+    var ENTRY_SELECTION_THRESHOLD = 10;
+
     var ENTRY_TYPE_J_TO_E = "J_TO_E";
     var ENTRY_TYPE_E_TO_J = "E_TO_J";
 
@@ -114,7 +116,9 @@
     }
 
     function buildSessionEntries(entries) {
-        sessionEntries = entries.flatMap(function (entry) {
+        var entriesClone = entries.slice();
+        shuffle(entriesClone);
+        sessionEntries = entriesClone.flatMap(function (entry) {
             var jToEEntry = {
                 srsEntry: entry,
                 type: ENTRY_TYPE_J_TO_E
@@ -128,13 +132,22 @@
         });
     }
 
+    function shuffle(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+        return array;
+    }
+
     function refreshEntry() {
         if (sessionEntries.length === 0) {
             endSession();
             return;
         }
 
-        var randomIndex = Math.floor(Math.random() * sessionEntries.length);
+        var entrySelectionThreshold = min(ENTRY_SELECTION_THRESHOLD, sessionEntries.length);
+        var randomIndex = Math.floor(Math.random() * entrySelectionThreshold);
         var visibleEntry = sessionEntries[randomIndex];
 
         var srsData = visibleEntry.srsEntry.srsData;
@@ -164,6 +177,10 @@
             exampleElement.innerHTML = example;
             examplesElement.appendChild(exampleElement);
         }
+    }
+
+    function min(left, right) {
+        return left < right ? left : right;
     }
 
     function transformInput() {
@@ -289,7 +306,7 @@
                 var level = entry.srsEntry.srsData.level;
                 entry.srsEntry.srsData.level = level <= 1 ? 1 : level - 1;
             }
-            
+
             var newSrsTime = new Date();
             newSrsTime.setHours(newSrsTime.getHours(), 0, 0, 0);
             entry.srsEntry.srsData.time = newSrsTime.getTime();
