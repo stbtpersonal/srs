@@ -46,6 +46,7 @@
     var spinnerElement = document.getElementById("review-spinner");
     var contentsElement = document.getElementById("review-contents");
     var homeButton = document.getElementById("review-home");
+    var remainingElement = document.getElementById("review-remaining");
     var toTranslateElement = document.getElementById("review-to-translate");
     var translationInputElement = document.getElementById("review-translation");
     var translationInputOverlayElement = document.getElementById("review-translation-overlay");
@@ -59,6 +60,8 @@
 
     var isQuizSession = false;
     var sessionEntries = [];
+    var startEntryAmount = 0;
+    var currentEntryAmount = 0;
     var visibleEntryIndex = 0;
     var wrongEntries = [];
     var isReviewingAnswer = false;
@@ -105,6 +108,8 @@
     function reset() {
         isQuizSession = false;
         sessionEntries = [];
+        startEntryAmount = 0;
+        currentEntryAmount = 0;
         visibleEntryIndex = 0;
         wrongEntries = [];
         isReviewingAnswer = false;
@@ -112,6 +117,11 @@
 
     function startSession(entries) {
         buildSessionEntries(entries);
+
+        startEntryAmount = entries.length;
+        currentEntryAmount = entries.length;
+        refreshRemaining();
+        
         refreshEntry();
     }
 
@@ -138,6 +148,10 @@
             [array[i], array[j]] = [array[j], array[i]];
         }
         return array;
+    }
+
+    function refreshRemaining() {
+        remainingElement.innerHTML = currentEntryAmount + "/" + startEntryAmount;
     }
 
     function refreshEntry() {
@@ -312,6 +326,9 @@
             entry.srsEntry.srsData.time = newSrsTime.getTime();
 
             srs.database.updateEntry(entry.srsEntry);
+
+            currentEntryAmount--;
+            refreshRemaining();
         }
     }
 
