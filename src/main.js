@@ -1,6 +1,8 @@
 (function () {
     "use strict";
 
+    var LEVEL_DURATIONS = [0, 2, 4, 8, 24, 48, 168, 336, 720, 1440, 4320];
+
     var initializingScreenElement = document.getElementById("initializing-screen");
     var signInScreenElement = document.getElementById("sign-in-screen");
     var mainScreenElement = document.getElementById("main-screen");
@@ -82,12 +84,21 @@
                 return false;
             }
 
-            return entry.srsData.time + getLevelDuration(srsLevel) < now;
+            var levelDuration = getLevelDuration(srsLevel);
+            if (!levelDuration) {
+                return false;
+            }
+
+            return entry.srsData.time + levelDuration < now;
         });
     }
 
     function getLevelDuration(level) {
-        var levelDurationInHours = Math.pow(2, level);
+        if (level >= LEVEL_DURATIONS.length) {
+            return 0;
+        }
+
+        var levelDurationInHours = LEVEL_DURATIONS[level];
         return levelDurationInHours * 60 * 60 * 1000;
     }
 

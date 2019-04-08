@@ -100,6 +100,10 @@
             }
 
             var levelDuration = srs.getLevelDuration(entry.srsData.level);
+            if (!levelDuration) {
+                continue;
+            }
+
             var reviewTimestamp = timestamp + levelDuration;
 
             if (reviewTimestamp < nowTimestamp) {
