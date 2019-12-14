@@ -3,8 +3,8 @@
 
     var ENTRY_SELECTION_THRESHOLD = 10;
 
-    var ENTRY_TYPE_J_TO_E = "J_TO_E";
-    var ENTRY_TYPE_E_TO_J = "E_TO_J";
+    var INPUT_TYPE_JAPANESE = "J";
+    var INPUT_TYPE_ENGLISH = "E";
 
     var INPUT_TRANSFORMATION_DICTIONARY = {
         "a": "あ", "i": "い", "u": "う", "e": "え", "o": "お",
@@ -55,8 +55,8 @@
     var translationInputElement = document.getElementById("review-translation");
     var translationInputOverlayElement = document.getElementById("review-translation-overlay");
     var detailsElement = document.getElementById("review-details");
-    var allJapaneseElement = document.getElementById("review-all-japanese");
-    var allEnglishElement = document.getElementById("review-all-english");
+    var detailsFrontElement = document.getElementById("review-details-front");
+    var detailsBackElement = document.getElementById("review-details-back");
     var notesElement = document.getElementById("review-notes");
     var nextButton = document.getElementById("review-next");
 
@@ -130,18 +130,7 @@
     function buildSessionEntries(entries) {
         var entriesClone = entries.slice();
         shuffle(entriesClone);
-        sessionEntries = entriesClone.flatMap(function (entry) {
-            var jToEEntry = {
-                srsEntry: entry,
-                type: ENTRY_TYPE_J_TO_E
-            };
-            var eToJEntry = {
-                srsEntry: entry,
-                type: ENTRY_TYPE_E_TO_J
-            };
-
-            return [jToEEntry, eToJEntry];
-        });
+        sessionEntries = entriesClone;
     }
 
     function shuffle(array) {
@@ -166,14 +155,9 @@
         var randomIndex = Math.floor(Math.random() * entrySelectionThreshold);
         var visibleEntry = sessionEntries[randomIndex];
 
-        var srsData = visibleEntry.srsEntry.srsData;
-        if (visibleEntry.type === ENTRY_TYPE_J_TO_E) {
-            toTranslateElement.innerHTML = srsData.japanese[0];
-        }
-        else {
-            toTranslateElement.innerHTML = srsData.english[0];
-        }
-
+        var srsData = visibleEntry.srsData;
+        toTranslateElement.innerHTML = srsData.front[0];
+        
         visibleEntryIndex = randomIndex;
 
         resultElement.style.display = "none";
@@ -184,8 +168,8 @@
         isReviewingAnswer = false;
 
         detailsElement.style.display = "none";
-        allJapaneseElement.innerHTML = srs.arrayToString(srsData.japanese);
-        allEnglishElement.innerHTML = srs.arrayToString(srsData.english);
+        detailsFrontElement.innerHTML = srs.arrayToString(srsData.front);
+        detailsBackElement.innerHTML = srs.arrayToString(srsData.back);
         notesElement.innerHTML = srsData.notes;
     }
 
@@ -197,7 +181,7 @@
         var lowerCaseInput = translationInputElement.value.toLowerCase();
 
         var visibleEntry = sessionEntries[visibleEntryIndex];
-        if (visibleEntry.type === ENTRY_TYPE_J_TO_E) {
+        if (visibleEntry.srsData.input === INPUT_TYPE_ENGLISH) {
             translationInputElement.value = lowerCaseInput;
             return;
         }
@@ -277,8 +261,8 @@
         var normalizedAnswer = normalize(answer);
 
         var visibleEntry = sessionEntries[visibleEntryIndex];
-        var srsData = visibleEntry.srsEntry.srsData;
-        var expectedAnswers = visibleEntry.type === ENTRY_TYPE_J_TO_E ? srsData.english : srsData.japanese;
+        var srsData = visibleEntry.srsData;
+        var expectedAnswers = srsData.back;
         var normalizedExpectedAnswers = expectedAnswers.map(normalize);
 
         if (!normalizedExpectedAnswers.includes(normalizedAnswer)) {
@@ -310,22 +294,22 @@
         if (isEntryFinished) {
             var hasGotEntryRight = !containsEntry(wrongEntries, entry);
             if (hasGotEntryRight) {
-                entry.srsEntry.srsData.level++;
+                entry.srsData.level++;
                 resultElement.style.backgroundColor = RESULT_GREEN;
             }
             else {
-                var level = entry.srsEntry.srsData.level;
-                entry.srsEntry.srsData.level = level <= 1 ? 1 : level - 1;
+                var level = entry.srsData.level;
+                entry.srsData.level = level <= 1 ? 1 : level - 1;
                 resultElement.style.backgroundColor = RESULT_RED;
             }
-            resultElement.innerHTML = srs.getLevelName(entry.srsEntry.srsData.level);
+            resultElement.innerHTML = srs.getLevelName(entry.srsData.level);
             resultElement.style.display = "block";
 
             var newSrsTime = new Date();
             newSrsTime.setHours(newSrsTime.getHours(), 0, 0, 0);
-            entry.srsEntry.srsData.time = newSrsTime.getTime();
+            entry.srsData.time = newSrsTime.getTime();
 
-            srs.database.updateEntry(entry.srsEntry);
+            srs.database.updateEntry(entry);
 
             currentEntryAmount--;
             refreshRemaining();

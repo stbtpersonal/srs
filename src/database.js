@@ -64,11 +64,11 @@
             return undefined;
         }
 
-        var serializedJapanese = serializedData[COLUMN_INDEX_FRONT];
-        var japanese = serializedJapanese.split("; ");
+        var serializedFront = serializedData[COLUMN_INDEX_FRONT];
+        var front = serializedFront.split("; ");
 
-        var serializedEnglish = serializedData[COLUMN_INDEX_BACK];
-        var english = serializedEnglish.split("; ");
+        var serializedBack = serializedData[COLUMN_INDEX_BACK];
+        var back = serializedBack.split("; ");
 
         var input = serializedData[COLUMN_INDEX_INPUT];
 
@@ -82,8 +82,8 @@
         var time = serializedTime ? new Date(parseInt(serializedTime)).getTime() : new Date(0).getTime();
 
         return {
-            japanese: japanese,
-            english: english,
+            front: front,
+            back: back,
             input: input,
             notes: notes,
             level: level,

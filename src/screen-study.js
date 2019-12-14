@@ -6,10 +6,10 @@
     var spinnerElement = document.getElementById("study-spinner");
     var contentsElement = document.getElementById("study-contents");
     var homeButton = document.getElementById("study-home");
-    var japaneseElement = document.getElementById("study-japanese");
-    var englishElement = document.getElementById("study-english");
-    var allJapaneseElement = document.getElementById("study-all-japanese");
-    var allEnglishElement = document.getElementById("study-all-english");
+    var frontElement = document.getElementById("study-front");
+    var backElement = document.getElementById("study-back");
+    var detailsFrontElement = document.getElementById("study-details-front");
+    var detailsBackElement = document.getElementById("study-details-back");
     var notesElement = document.getElementById("study-notes");
     var previousButton = document.getElementById("study-previous");
     var nextButton = document.getElementById("study-next");
@@ -63,10 +63,10 @@
 
         var visibleEntry = sessionEntries[visibleEntryIndex];
 
-        japaneseElement.innerHTML = visibleEntry.srsData.japanese[0];
-        englishElement.innerHTML = visibleEntry.srsData.english[0];
-        allJapaneseElement.innerHTML = srs.arrayToString(visibleEntry.srsData.japanese);
-        allEnglishElement.innerHTML = srs.arrayToString(visibleEntry.srsData.english);
+        frontElement.innerHTML = visibleEntry.srsData.front[0];
+        backElement.innerHTML = visibleEntry.srsData.back[0];
+        detailsFrontElement.innerHTML = srs.arrayToString(visibleEntry.srsData.front);
+        detailsBackElement.innerHTML = srs.arrayToString(visibleEntry.srsData.back);
         notesElement.innerHTML = visibleEntry.srsData.notes;
     }
 
