@@ -6,15 +6,16 @@
 
     var COLUMN_INDEX_FRONT = 0;
     var COLUMN_INDEX_BACK = 1;
-    var COLUMN_INDEX_NOTES = 2;
-    var COLUMN_INDEX_LEVEL = 3;
-    var COLUMN_INDEX_TIME = 4;
+    var COLUMN_INDEX_INPUT = 2;
+    var COLUMN_INDEX_NOTES = 3;
+    var COLUMN_INDEX_LEVEL = 4;
+    var COLUMN_INDEX_TIME = 5;
 
     var END_COLUMN_INDEX = COLUMN_INDEX_TIME;
 
     var TEMPLATE_DATA = [
-        ["Front", "Back", "Notes", "Level", "Time"],
-        ["これ", "this one; this", "<b>これ</b>はペンです - <b>This</b> is a pen", "", ""],
+        ["Front", "Back", "Input", "Notes", "Level", "Time"],
+        ["これ", "this one; this", "E", "<b>これ</b>はペンです - <b>This</b> is a pen", "", ""],
     ];
 
     function refreshEntries() {
@@ -69,6 +70,8 @@
         var serializedEnglish = serializedData[COLUMN_INDEX_BACK];
         var english = serializedEnglish.split("; ");
 
+        var input = serializedData[COLUMN_INDEX_INPUT];
+
         var serializedNotes = serializedData[COLUMN_INDEX_NOTES];
         var notes = serializedNotes ? serializedNotes : "";
 
@@ -81,6 +84,7 @@
         return {
             japanese: japanese,
             english: english,
+            input: input,
             notes: notes,
             level: level,
             time: time,
