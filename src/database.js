@@ -4,19 +4,17 @@
     var START_COLUMN_NAME = "B";
     var START_ROW_INDEX = 2;
 
-    var COLUMN_INDEX_JAPANESE = 0;
-    var COLUMN_INDEX_ENGLISH = 1;
-    var COLUMN_INDEX_EXPLANATION = 2;
-    var COLUMN_INDEX_MNEMONIC = 3;
-    var COLUMN_INDEX_EXAMPLES = 4;
-    var COLUMN_INDEX_LEVEL = 5;
-    var COLUMN_INDEX_TIME = 6;
+    var COLUMN_INDEX_FRONT = 0;
+    var COLUMN_INDEX_BACK = 1;
+    var COLUMN_INDEX_NOTES = 2;
+    var COLUMN_INDEX_LEVEL = 3;
+    var COLUMN_INDEX_TIME = 4;
 
     var END_COLUMN_INDEX = COLUMN_INDEX_TIME;
 
     var TEMPLATE_DATA = [
-        ["Japanese", "English", "Explanation", "Mnemonic", "Examples", "Level", "Time"],
-        ["これ", "this one; this", "Detailed explanation", "A mnemonic to help remember the word", "Example 1; Example 2", "", ""],
+        ["Front", "Back", "Notes", "Level", "Time"],
+        ["これ", "this one; this", "<b>これ</b>はペンです - <b>This</b> is a pen", "", ""],
     ];
 
     function refreshEntries() {
@@ -61,24 +59,18 @@
     }
 
     function deserializeSrsData(serializedData) {
-        if (!serializedData[COLUMN_INDEX_JAPANESE] || !serializedData[COLUMN_INDEX_ENGLISH]) {
+        if (!serializedData[COLUMN_INDEX_FRONT] || !serializedData[COLUMN_INDEX_BACK]) {
             return undefined;
         }
 
-        var serializedJapanese = serializedData[COLUMN_INDEX_JAPANESE];
+        var serializedJapanese = serializedData[COLUMN_INDEX_FRONT];
         var japanese = serializedJapanese.split("; ");
 
-        var serializedEnglish = serializedData[COLUMN_INDEX_ENGLISH];
+        var serializedEnglish = serializedData[COLUMN_INDEX_BACK];
         var english = serializedEnglish.split("; ");
 
-        var serializedExplanation = serializedData[COLUMN_INDEX_EXPLANATION];
-        var explanation = serializedExplanation ? serializedExplanation : "";
-
-        var serializedMnemonic = serializedData[COLUMN_INDEX_MNEMONIC];
-        var mnemonic = serializedMnemonic ? serializedMnemonic : "";
-
-        var serializedExamples = serializedData[COLUMN_INDEX_EXAMPLES];
-        var examples = serializedExamples ? serializedExamples.split("; ") : [];
+        var serializedNotes = serializedData[COLUMN_INDEX_NOTES];
+        var notes = serializedNotes ? serializedNotes : "";
 
         var serializedLevel = serializedData[COLUMN_INDEX_LEVEL];
         var level = serializedLevel ? parseInt(serializedLevel) : 0;
@@ -89,9 +81,7 @@
         return {
             japanese: japanese,
             english: english,
-            explanation: explanation,
-            mnemonic: mnemonic,
-            examples: examples,
+            notes: notes,
             level: level,
             time: time,
         };

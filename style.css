@@ -498,7 +498,7 @@ div {
     color: rgb(75, 75, 75);
 }
 
-.study-review-explanation-title {
+.study-review-notes-title {
     text-align: left;
     text-decoration: none;
     font-family: 'Roboto', arial, sans-serif;
@@ -507,7 +507,7 @@ div {
     color: rgb(75, 75, 75);
 }
 
-.study-review-explanation {
+.study-review-notes {
     margin-top: 2vmin;
     text-align: left;
     text-decoration: none;

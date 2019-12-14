@@ -53,9 +53,7 @@
     var detailsElement = document.getElementById("review-details");
     var allJapaneseElement = document.getElementById("review-all-japanese");
     var allEnglishElement = document.getElementById("review-all-english");
-    var explanationElement = document.getElementById("review-explanation");
-    var mnemonicElement = document.getElementById("review-mnemonic");
-    var examplesElement = document.getElementById("review-examples");
+    var notesElement = document.getElementById("review-notes");
     var nextButton = document.getElementById("review-next");
 
     var isQuizSession = false;
@@ -182,15 +180,7 @@
         detailsElement.style.display = "none";
         allJapaneseElement.innerHTML = srs.arrayToString(srsData.japanese);
         allEnglishElement.innerHTML = srs.arrayToString(srsData.english);
-        explanationElement.innerHTML = srsData.explanation;
-        mnemonicElement.innerHTML = srsData.mnemonic;
-
-        examplesElement.innerHTML = "";
-        for (var example of srsData.examples) {
-            var exampleElement = document.createElement("div");
-            exampleElement.innerHTML = example;
-            examplesElement.appendChild(exampleElement);
-        }
+        notesElement.innerHTML = srsData.notes;
     }
 
     function min(left, right) {

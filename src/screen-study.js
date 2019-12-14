@@ -10,9 +10,7 @@
     var englishElement = document.getElementById("study-english");
     var allJapaneseElement = document.getElementById("study-all-japanese");
     var allEnglishElement = document.getElementById("study-all-english");
-    var explanationElement = document.getElementById("study-explanation");
-    var mnemonicElement = document.getElementById("study-mnemonic");
-    var examplesElement = document.getElementById("study-examples");
+    var notesElement = document.getElementById("study-notes");
     var previousButton = document.getElementById("study-previous");
     var nextButton = document.getElementById("study-next");
 
@@ -69,15 +67,7 @@
         englishElement.innerHTML = visibleEntry.srsData.english[0];
         allJapaneseElement.innerHTML = srs.arrayToString(visibleEntry.srsData.japanese);
         allEnglishElement.innerHTML = srs.arrayToString(visibleEntry.srsData.english);
-        explanationElement.innerHTML = visibleEntry.srsData.explanation;
-        mnemonicElement.innerHTML = visibleEntry.srsData.mnemonic;
-
-        examplesElement.innerHTML = "";
-        for (var example of visibleEntry.srsData.examples) {
-            var exampleElement = document.createElement("div");
-            exampleElement.innerHTML = example;
-            examplesElement.appendChild(exampleElement);
-        }
+        notesElement.innerHTML = visibleEntry.srsData.notes;
     }
 
     function goBack() {
