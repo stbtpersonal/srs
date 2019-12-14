@@ -1,7 +1,7 @@
 (function () {
     "use strict";
 
-    var LEVEL_DURATIONS = [0, 2, 4, 8, 24, 48, 168, 336, 720, 1440, 4320];
+    var LEVEL_DURATIONS = [0, 3, 7, 23, 47, 167, 335, 719, 2879];
 
     var initializingScreenElement = document.getElementById("initializing-screen");
     var signInScreenElement = document.getElementById("sign-in-screen");
