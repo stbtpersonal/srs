@@ -85,8 +85,8 @@
         }
 
         entries.sort(function (a, b) {
-            var aReviewTime = a.srsData.time + srs.getLevelDuration(a.srsData.level);
-            var bReviewTime = b.srsData.time + srs.getLevelDuration(b.srsData.level);
+            var aReviewTime = a.srsData.time + srs.getLevelDurationMillis(a.srsData.level);
+            var bReviewTime = b.srsData.time + srs.getLevelDurationMillis(b.srsData.level);
             return aReviewTime - bReviewTime;
         });
 
@@ -99,7 +99,7 @@
                 continue;
             }
 
-            var levelDuration = srs.getLevelDuration(entry.srsData.level);
+            var levelDuration = srs.getLevelDurationMillis(entry.srsData.level);
             if (!levelDuration) {
                 continue;
             }

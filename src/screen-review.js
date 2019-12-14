@@ -39,15 +39,19 @@
 
     var SMALL_TSU_CONSONANTS = ["k", "s", "t", "h", "m", "y", "r", "w", "g", "z", "d", "b", "p", "j", "c"];
 
-    var OVERLAY_GREEN = "rgba(0, 255, 0, 0.5)"
-    var OVERLAY_YELLOW = "rgba(255, 255, 0, 0.5)"
-    var OVERLAY_RED = "rgba(255, 0, 0, 0.5)"
+    var OVERLAY_GREEN = "rgba(0, 255, 0, 0.5)";
+    var OVERLAY_YELLOW = "rgba(255, 255, 0, 0.5)";
+    var OVERLAY_RED = "rgba(255, 0, 0, 0.5)";
+
+    var RESULT_GREEN = "rgb(127, 255, 127)";
+    var RESULT_RED = "rgb(255, 127, 127)";
 
     var spinnerElement = document.getElementById("review-spinner");
     var contentsElement = document.getElementById("review-contents");
     var homeButton = document.getElementById("review-home");
     var remainingElement = document.getElementById("review-remaining");
     var toTranslateElement = document.getElementById("review-to-translate");
+    var resultElement = document.getElementById("review-result");
     var translationInputElement = document.getElementById("review-translation");
     var translationInputOverlayElement = document.getElementById("review-translation-overlay");
     var detailsElement = document.getElementById("review-details");
@@ -171,6 +175,8 @@
         }
 
         visibleEntryIndex = randomIndex;
+
+        resultElement.style.display = "none";
 
         translationInputElement.value = "";
         translationInputOverlayElement.style.backgroundColor = "transparent";
@@ -305,13 +311,17 @@
             var hasGotEntryRight = !containsEntry(wrongEntries, entry);
             if (hasGotEntryRight) {
                 entry.srsEntry.srsData.level++;
+                resultElement.style.backgroundColor = RESULT_GREEN;
             }
             else {
                 var level = entry.srsEntry.srsData.level;
                 entry.srsEntry.srsData.level = level <= 1 ? 1 : level - 1;
+                resultElement.style.backgroundColor = RESULT_RED;
             }
+            resultElement.innerHTML = srs.getLevelName(entry.srsEntry.srsData.level);
+            resultElement.style.display = "block";
 
-            var newSrsTime = new Date();
+            var newSrsTime = new Date(entry.srsEntry.srsData.level);
             newSrsTime.setHours(newSrsTime.getHours(), 0, 0, 0);
             entry.srsEntry.srsData.time = newSrsTime.getTime();
 

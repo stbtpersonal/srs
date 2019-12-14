@@ -1,7 +1,7 @@
 (function () {
     "use strict";
 
-    var LEVEL_DURATIONS = [0, 3, 7, 23, 47, 167, 335, 719, 2879];
+    var LEVEL_DURATIONS_IN_HOURS = [0, 3, 7, 23, 47, 167, 335, 719, 2879];
 
     var initializingScreenElement = document.getElementById("initializing-screen");
     var signInScreenElement = document.getElementById("sign-in-screen");
@@ -84,7 +84,7 @@
                 return false;
             }
 
-            var levelDuration = getLevelDuration(srsLevel);
+            var levelDuration = getLevelDurationMillis(srsLevel);
             if (!levelDuration) {
                 return false;
             }
@@ -93,13 +93,17 @@
         });
     }
 
-    function getLevelDuration(level) {
-        if (level >= LEVEL_DURATIONS.length) {
+    function getLevelDurationMillis(level) {
+        if (level >= LEVEL_DURATIONS_IN_HOURS.length) {
             return 0;
         }
 
-        var levelDurationInHours = LEVEL_DURATIONS[level];
+        var levelDurationInHours = LEVEL_DURATIONS_IN_HOURS[level];
         return levelDurationInHours * 60 * 60 * 1000;
+    }
+
+    function getLevelName(level) {
+        return LEVEL_DURATIONS_IN_HOURS[level] + "h";
     }
 
     function arrayToString(array) {
@@ -125,7 +129,8 @@
 
         findEntriesForStudy: findEntriesForStudy,
         findEntriesForReview: findEntriesForReview,
-        getLevelDuration: getLevelDuration,
+        getLevelDurationMillis: getLevelDurationMillis,
+        getLevelName: getLevelName,
 
         arrayToString: arrayToString,
     };
