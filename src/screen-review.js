@@ -321,7 +321,7 @@
             resultElement.innerHTML = srs.getLevelName(entry.srsEntry.srsData.level);
             resultElement.style.display = "block";
 
-            var newSrsTime = new Date(entry.srsEntry.srsData.level);
+            var newSrsTime = new Date();
             newSrsTime.setHours(newSrsTime.getHours(), 0, 0, 0);
             entry.srsEntry.srsData.time = newSrsTime.getTime();
 
