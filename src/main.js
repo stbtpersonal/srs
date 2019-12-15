@@ -3,6 +3,9 @@
 
     var LEVEL_DURATIONS_IN_HOURS = [0, 3, 7, 23, 47, 167, 335, 719, 2879];
 
+    var MAX_ENTRIES_BELOW_LEVEL_THRESHOLD = 100;
+    var LEVEL_THRESHOLD = 5;
+
     var initializingScreenElement = document.getElementById("initializing-screen");
     var signInScreenElement = document.getElementById("sign-in-screen");
     var mainScreenElement = document.getElementById("main-screen");
@@ -71,9 +74,17 @@
     }
 
     function findEntriesForStudy(entries) {
-        return entries.filter(function (entry) {
+        var entriesBelowThresholdCount = entries.filter(function (entry) {
+            return entry.srsData.level > 0 && entry.srsData.level < LEVEL_THRESHOLD;
+        }).length;
+        if (entriesBelowThresholdCount >= MAX_ENTRIES_BELOW_LEVEL_THRESHOLD) {
+            return [];
+        }
+
+        var studyEntries = entries.filter(function (entry) {
             return entry.srsData.level == 0;
         });
+        return studyEntries.slice(0, MAX_ENTRIES_BELOW_LEVEL_THRESHOLD - entriesBelowThresholdCount);
     }
 
     function findEntriesForReview(entries) {
