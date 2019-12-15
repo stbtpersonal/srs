@@ -286,6 +286,10 @@
     function markEntryWrong(entry) {
         if (!containsEntry(wrongEntries, entry)) {
             wrongEntries.push(entry);
+
+            var level = entry.srsData.level;
+            entry.srsData.level = level <= 1 ? 1 : level - 1;
+            updateEntry(entry);
         }
     }
 
@@ -295,25 +299,27 @@
             var hasGotEntryRight = !containsEntry(wrongEntries, entry);
             if (hasGotEntryRight) {
                 entry.srsData.level++;
+                updateEntry(entry);
+
                 resultElement.style.backgroundColor = RESULT_GREEN;
             }
             else {
-                var level = entry.srsData.level;
-                entry.srsData.level = level <= 1 ? 1 : level - 1;
                 resultElement.style.backgroundColor = RESULT_RED;
             }
             resultElement.innerHTML = srs.getLevelName(entry.srsData.level);
             resultElement.style.display = "block";
 
-            var newSrsTime = new Date();
-            newSrsTime.setHours(newSrsTime.getHours(), 0, 0, 0);
-            entry.srsData.time = newSrsTime.getTime();
-
-            srs.database.updateEntry(entry);
-
             currentEntryAmount--;
             refreshRemaining();
         }
+    }
+
+    function updateEntry(entry) {
+        var newSrsTime = new Date();
+        newSrsTime.setHours(newSrsTime.getHours(), 0, 0, 0);
+        entry.srsData.time = newSrsTime.getTime();
+
+        srs.database.updateEntry(entry);
     }
 
     function containsEntry(entries, toFind) {
