@@ -114,6 +114,9 @@
     }
 
     function getLevelName(level) {
+        if (level >= LEVEL_DURATIONS_IN_HOURS.length) {
+            return "DONE";
+        }
         return LEVEL_DURATIONS_IN_HOURS[level] + "h";
     }
 
