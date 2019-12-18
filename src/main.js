@@ -1,7 +1,7 @@
 (function () {
     "use strict";
 
-    var LEVEL_DURATIONS_IN_HOURS = [0, 3, 7, 23, 47, 167, 335, 719, 2879];
+    var LEVEL_DURATIONS_IN_HOURS = [0, 4, 8, 23, 47, 167, 335, 719, 2879];
 
     var MAX_ENTRIES_BELOW_LEVEL_THRESHOLD = 100;
     var LEVEL_THRESHOLD = 5;
