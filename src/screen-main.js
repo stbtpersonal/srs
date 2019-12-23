@@ -51,14 +51,13 @@
             return;
         }
 
+        var incompleteEntries = srs.findIncompleteEntries(entries);
+
         databaseNoEntriesElement.style.display = "none";
         for (var spreadsheet of spreadsheets) {
-            var amount = 0;
-            for (var entry of entries) {
-                if (entry.spreadsheetId === spreadsheet.id) {
-                    amount++;
-                }
-            }
+            var amount = incompleteEntries.filter(function(entry) {
+                return entry.spreadsheetId === spreadsheet.id;
+            }).length;
 
             appendDatabaseEntry(spreadsheet.name, amount, spreadsheet.webViewLink);
         }

@@ -104,6 +104,12 @@
         });
     }
 
+    function findIncompleteEntries(entries) {
+        return entries.filter(function (entry) {
+            return entry.srsData.level < LEVEL_DURATIONS_IN_HOURS.length;
+        });
+    }
+
     function getLevelDurationMillis(level) {
         if (level >= LEVEL_DURATIONS_IN_HOURS.length) {
             return 0;
@@ -143,6 +149,7 @@
 
         findEntriesForStudy: findEntriesForStudy,
         findEntriesForReview: findEntriesForReview,
+        findIncompleteEntries: findIncompleteEntries,
         getLevelDurationMillis: getLevelDurationMillis,
         getLevelName: getLevelName,
 
