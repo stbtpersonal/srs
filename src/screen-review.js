@@ -163,6 +163,7 @@
         resultElement.style.display = "none";
 
         translationInputElement.value = "";
+        translationInputElement.setAttribute("placeholder", srsData.input === INPUT_TYPE_ENGLISH ? "Answer" : "答え");
         translationInputOverlayElement.style.backgroundColor = "transparent";
         translationInputElement.focus();
         isReviewingAnswer = false;
