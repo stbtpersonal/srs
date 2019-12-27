@@ -272,7 +272,7 @@
         else {
             translationInputOverlayElement.style.backgroundColor = OVERLAY_GREEN;
             sessionEntries.splice(visibleEntryIndex, 1);
-            tryCommitEntry(visibleEntry);
+            commitEntry(visibleEntry);
         }
 
         detailsElement.style.display = "block";
@@ -293,25 +293,22 @@
         }
     }
 
-    function tryCommitEntry(entry) {
-        var isEntryFinished = !containsEntry(sessionEntries, entry);
-        if (isEntryFinished) {
-            var hasGotEntryRight = !containsEntry(wrongEntries, entry);
-            if (hasGotEntryRight) {
-                entry.srsData.level++;
-                updateEntry(entry);
+    function commitEntry(entry) {
+        var hasGotEntryRight = !containsEntry(wrongEntries, entry);
+        if (hasGotEntryRight) {
+            entry.srsData.level++;
+            updateEntry(entry);
 
-                resultElement.style.backgroundColor = RESULT_GREEN;
-            }
-            else {
-                resultElement.style.backgroundColor = RESULT_RED;
-            }
-            resultElement.innerHTML = srs.getLevelName(entry.srsData.level);
-            resultElement.style.display = "block";
-
-            currentEntryAmount--;
-            refreshRemaining();
+            resultElement.style.backgroundColor = RESULT_GREEN;
         }
+        else {
+            resultElement.style.backgroundColor = RESULT_RED;
+        }
+        resultElement.innerHTML = srs.getLevelName(entry.srsData.level);
+        resultElement.style.display = "block";
+
+        currentEntryAmount--;
+        refreshRemaining();
     }
 
     function updateEntry(entry) {
@@ -323,7 +320,7 @@
     }
 
     function containsEntry(entries, toFind) {
-        return entries.filter(function (entry) { return entry.srsEntry === toFind.srsEntry }).length > 0;
+        return entries.filter(function (entry) { return entry === toFind }).length > 0;
     }
 
     function endSession() {
