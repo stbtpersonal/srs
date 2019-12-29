@@ -457,10 +457,7 @@ div {
 }
 
 .study-review-translation::placeholder {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    vertical-align: center;
     text-align: center;
     text-decoration: none;
     font-family: 'Roboto', arial, sans-serif;
