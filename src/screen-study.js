@@ -1,7 +1,7 @@
 (function () {
     "use strict";
 
-    var ENTRIES_PER_SESSION = 5;
+    var ENTRIES_PER_SESSION = 10;
 
     var spinnerElement = document.getElementById("study-spinner");
     var contentsElement = document.getElementById("study-contents");
