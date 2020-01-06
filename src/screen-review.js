@@ -2,6 +2,7 @@
     "use strict";
 
     var ENTRY_SELECTION_THRESHOLD = 10;
+    var MAX_EDIT_DISTANCE = 3;
 
     var INPUT_TYPE_JAPANESE = "J";
     var INPUT_TYPE_ENGLISH = "E";
@@ -42,6 +43,7 @@
     var SMALL_TSU_CONSONANTS = ["k", "s", "t", "h", "m", "y", "r", "w", "g", "z", "d", "b", "p", "j", "c"];
 
     var OVERLAY_GREEN = "rgba(0, 255, 0, 0.5)";
+    var OVERLAY_BLUE = "rgba(100, 255, 255, 0.5)";
     var OVERLAY_YELLOW = "rgba(255, 255, 0, 0.5)";
     var OVERLAY_RED = "rgba(255, 0, 0, 0.5)";
 
@@ -268,12 +270,29 @@
         var expectedAnswers = srsData.back;
         var normalizedExpectedAnswers = expectedAnswers.map(normalize);
 
-        if (!normalizedExpectedAnswers.includes(normalizedAnswer)) {
+        var foundCorrectAnswer = false;
+        var isSpotOn = false;
+        if (srsData.input === INPUT_TYPE_ENGLISH) {
+            for (var normalizedExpectedAnswer of normalizedExpectedAnswers) {
+                var answerEditDistance = editDistance(normalizedExpectedAnswer, normalizedAnswer);
+                if (answerEditDistance <= MAX_EDIT_DISTANCE) {
+                    foundCorrectAnswer = true;
+                    isSpotOn = answerEditDistance === 0;
+                    break;
+                }
+            }
+        }
+        else {
+            foundCorrectAnswer = normalizedExpectedAnswers.includes(normalizedAnswer);
+            isSpotOn = true;
+        }
+
+        if (!foundCorrectAnswer) {
             translationInputOverlayElement.style.backgroundColor = OVERLAY_RED;
             markEntryWrong(visibleEntry);
         }
         else {
-            translationInputOverlayElement.style.backgroundColor = OVERLAY_GREEN;
+            translationInputOverlayElement.style.backgroundColor = isSpotOn ? OVERLAY_GREEN : OVERLAY_BLUE;
             sessionEntries.splice(visibleEntryIndex, 1);
             commitEntry(visibleEntry);
         }
@@ -284,6 +303,36 @@
 
     function normalize(text) {
         return text.toLowerCase().replace(/[^\sa-z\u3041-\u3096]/g, "");
+    }
+
+    // Adapted from https://github.com/trekhleb/javascript-algorithms/blob/master/src/algorithms/string/levenshtein-distance/levenshteinDistance.js
+    function editDistance(left, right) {
+        var distanceMatrix = Array(left.length + 1);
+        for (var i = 0; i < left.length + 1; i++) {
+            distanceMatrix[i] = Array(right.length + 1);
+        }
+
+        for (var i = 0; i < left.length + 1; i++) {
+            distanceMatrix[i][0] = i;
+        }
+        for (var j = 0; j < right.length + 1; j++) {
+            distanceMatrix[0][j] = j;
+        }
+
+        for (var i = 1; i < left.length + 1; i++) {
+            for (var j = 1; j < right.length + 1; j++) {
+                var indicator = left[i - 1] === right[j - 1] ? 0 : 1;
+                distanceMatrix[i][j] = Math.min(
+                    distanceMatrix[i][j - 1] + 1, // deletion
+                    distanceMatrix[i - 1][j] + 1, // insertion
+                    distanceMatrix[i - 1][j - 1] + indicator, // substitution
+                );
+            }
+        }
+
+        console.log("AAAA!!!! " + left + " " + right + " " + distanceMatrix[left.length][right.length]);
+
+        return distanceMatrix[left.length][right.length];
     }
 
     function markEntryWrong(entry) {
