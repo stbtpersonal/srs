@@ -330,8 +330,6 @@
             }
         }
 
-        console.log("AAAA!!!! " + left + " " + right + " " + distanceMatrix[left.length][right.length]);
-
         return distanceMatrix[left.length][right.length];
     }
 
