@@ -273,14 +273,17 @@
         var foundCorrectAnswer = false;
         var isSpotOn = false;
         if (srsData.input === INPUT_TYPE_ENGLISH) {
+            var minEditDistance = Number.MAX_VALUE;
             for (var normalizedExpectedAnswer of normalizedExpectedAnswers) {
                 var answerEditDistance = editDistance(normalizedExpectedAnswer, normalizedAnswer);
                 if (answerEditDistance <= MAX_EDIT_DISTANCE) {
                     foundCorrectAnswer = true;
-                    isSpotOn = answerEditDistance === 0;
-                    break;
+                    if (answerEditDistance < minEditDistance) {
+                        minEditDistance = answerEditDistance;
+                    }
                 }
             }
+            isSpotOn = minEditDistance === 0;
         }
         else {
             foundCorrectAnswer = normalizedExpectedAnswers.includes(normalizedAnswer);
