@@ -245,38 +245,12 @@
     }
 
     function goForward() {
-        if (!isAnswerValid()) {
-            translationInputOverlayElement.style.backgroundColor = OVERLAY_YELLOW;
-        }
-        else if (!isReviewingAnswer) {
+        if (!isReviewingAnswer) {
             submit();
         }
         else {
             refreshEntry();
         }
-    }
-
-    function isAnswerValid() {
-        var answer = translationInputElement.value;
-        var normalizedAnswer = normalize(answer);
-        if (normalizedAnswer === "") {
-            return false;
-        }
-        
-        var visibleEntry = sessionEntries[visibleEntryIndex];
-        var isInputEnglish = visibleEntry.srsData.input === INPUT_TYPE_ENGLISH;
-        return (isInputEnglish && isAllEnglish(normalizedAnswer))
-            || (!isInputEnglish && isAllJapanese(normalizedAnswer));
-    }
-
-    function isAllEnglish(string) {
-        var nonEnglishRegex = /[^\sa-z]/;
-        return !nonEnglishRegex.test(string);
-    }
-
-    function isAllJapanese(string) {
-        var nonJapaneseRegex = /[^\s\u3041-\u3096]/;
-        return !nonJapaneseRegex.test(string);
     }
 
     function submit() {
@@ -285,6 +259,12 @@
 
         var visibleEntry = sessionEntries[visibleEntryIndex];
         var srsData = visibleEntry.srsData;
+
+        if (!isAnswerValid(normalizedAnswer, srsData.input)) {
+            translationInputOverlayElement.style.backgroundColor = OVERLAY_YELLOW;
+            return
+        }
+
         var expectedAnswers = srsData.back;
         var normalizedExpectedAnswers = expectedAnswers.map(normalize);
 
@@ -324,6 +304,26 @@
 
     function normalize(text) {
         return text.toLowerCase().replace(/[^\sa-z\u3041-\u3096]/g, "");
+    }
+
+    function isAnswerValid(answer, input) {
+        if (answer === "") {
+            return false;
+        }
+        
+        var isInputEnglish = input === INPUT_TYPE_ENGLISH;
+        return (isInputEnglish && isAllEnglish(answer))
+            || (!isInputEnglish && isAllJapanese(answer));
+    }
+
+    function isAllEnglish(string) {
+        var nonEnglishRegex = /[^\sa-z]/;
+        return !nonEnglishRegex.test(string);
+    }
+
+    function isAllJapanese(string) {
+        var nonJapaneseRegex = /[^\s\u3041-\u3096]/;
+        return !nonJapaneseRegex.test(string);
     }
 
     // Adapted from https://github.com/trekhleb/javascript-algorithms/blob/master/src/algorithms/string/levenshtein-distance/levenshteinDistance.js
