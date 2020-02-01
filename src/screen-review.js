@@ -258,7 +258,25 @@
 
     function isAnswerValid() {
         var answer = translationInputElement.value;
-        return answer !== "";
+        var normalizedAnswer = normalize(answer);
+        if (normalizedAnswer === "") {
+            return false;
+        }
+        
+        var visibleEntry = sessionEntries[visibleEntryIndex];
+        var isInputEnglish = visibleEntry.srsData.input === INPUT_TYPE_ENGLISH;
+        return (isInputEnglish && isAllEnglish(normalizedAnswer))
+            || (!isInputEnglish && isAllJapanese(normalizedAnswer));
+    }
+
+    function isAllEnglish(string) {
+        var nonEnglishRegex = /[^\sa-z]/;
+        return !nonEnglishRegex.test(string);
+    }
+
+    function isAllJapanese(string) {
+        var nonJapaneseRegex = /[^\s\u3041-\u3096]/;
+        return !nonJapaneseRegex.test(string);
     }
 
     function submit() {
